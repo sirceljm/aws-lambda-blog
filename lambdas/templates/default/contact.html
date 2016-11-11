@@ -1,0 +1,120 @@
+
+				<!-- Modal Structure -->
+				  <div id="send_email_thank_you_modal" class="modal">
+				    <div class="modal-content">
+				      <h4>Sending your message</h4>
+				      <p>Thank you for your message! I will try to get back to you as soon as I can.</p>
+				    </div>
+				  </div>
+
+				  <div id="captcha_error_modal" class="modal">
+				    <div class="modal-content">
+				      <h4>Please fill out the captcha</h4>
+				    </div>
+				     <div class="modal-footer">
+				      <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+				    </div>
+				  </div>
+
+				<div class="row content">
+					<div class="col s12 m9 l9 content_column">
+						<div class="post">		
+							<div class="post_title">
+								<div class="post_name"><h1>Contact me</h1></div>
+							</div>	
+							<div class="post_content">
+								<form id="contact_form">
+									<label>Name</label>
+									<input id="name" type="text" required />
+
+									<label>Email</label>
+									<input id="email" type="email" required />
+
+									<label>Message</label>
+									<textarea id="message" required style="height: 300px; width: 100%;"></textarea>
+
+									<!-- TODO dynamic-->
+									<div class="g-recaptcha" data-sitekey="6LfW_SgTAAAAAJ0FTZRvqLOt4QDThVYJAVzAKoR3" data-callback="enableBtn"></div>
+
+									<button class="btn" type="submit" >Send</button>
+
+									<style>
+										#g-recaptcha-response {
+										    display: block !important;
+										    position: absolute;
+										    margin: -78px 0 0 0 !important;
+										    width: 302px !important;
+										    height: 76px !important;
+										    z-index: -999999;
+										    opacity: 0;
+										}
+									</style>
+									<script>
+										$(document).ready(function() {
+										    var enableBtn = function(data){
+										    	console.log("enableBtn");
+										    };
+
+										    $("#contact_form").submit(function(event){
+										    	event.preventDefault();
+										    	if ($('#g-recaptcha-response').val() !== ""){
+												    $('#send_email_thank_you_modal').openModal();
+											    	$.ajax({
+													  type: "POST",
+													  url: "/send-message",
+													  data: JSON.stringify({
+														name: $("#name").val(), 
+														email: $("#email").val(),
+														captcha: $('#g-recaptcha-response').val(),
+														message: $("#message").val()
+													  }),
+													  success: function(res){
+													  	setTimeout(function(){
+													  		window.location = "/";
+													  	}, 2000);
+													  	
+													  },
+													  dataType: "json",
+													  contentType: 'application/json; charset=UTF-8'
+													});
+												}else{
+													$('#captcha_error_modal').openModal();
+												}
+											});
+										});
+									</script>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col s12 m3 l3 sidebar">
+						<div class="row">
+							<div class="color color_1"></div>
+							<div class="color color_2"></div>
+							<div class="color color_3"></div>
+							<div class="color color_4"></div>
+							<div class="color color_5"></div>
+						</div>
+						<br />
+
+						<a href="/about/"><div class="sidebar_title">About me</div></a>
+						<a href="/contact/"><div class="sidebar_title">Contact</div></a>
+						<br />
+
+
+						<div class="sidebar_title">Categories</div>
+						{{ for(var i = 0; i < it.categories.length; i++) { }}
+							<a href="/category/{{=it.categories[i].url_title}}/"><div class="sidebar_subtitle">{{=it.categories[i].category}}</div></a>
+						{{ } }}
+						<br />
+						
+						<div class="sidebar_title">Recent Posts</div>
+						{{ for(var i = 0; i < it.recent_posts.length; i++) { }}
+							<a href="/post/{{=it.recent_posts[i].post_url}}/"><div class="sidebar_subtitle">{{=it.recent_posts[i].title}}</div></a>
+						{{ } }}
+
+						<br />
+						<a href="/list/"><div class="sidebar_title">All Posts</div></a>
+					</div>
+				</div>
+	

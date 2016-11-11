@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8">
+	<title>Admin panel</title>
+
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1.0, user-scalable=no">
+	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Special+Elite" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Averia+Sans+Libre:700" rel="stylesheet">
+	
+	
+	
+	<script src="/static/js/jquery.min.js"></script>
+	<link rel="stylesheet" href="/static/js/fontawesome/css/font-awesome.min.css">
+	
+	<link href="/static/js/materialize/css/materialize.min.css" rel="stylesheet" >
+	<script src="/static/js/materialize/js/materialize.min.js"></script>
+	
+	<link rel="stylesheet" href="/static/js/ContentTools/content-tools.min.css" /> 
+
+
+	<script src="/static/js/angular.min.js"></script>
+	<script src="/static/js/angular-cookies.min.js"></script>
+	<script src="/static/js/jwt-decode.min.js"></script>
+	<script src="/static/js/angular-base64-upload.min.js"></script>
+	<script src="/static/js/moment.min.js"></script>
+	<script src="/static/js/hammer.min.js"></script>
+	<script src="/static/js/lodash.min.js"></script>
+	<script src="/static/js/angular-input-modified.min.js"></script>
+	<link href="/static/js/angularjs-color-picker.css" rel="stylesheet" />
+	<script src="/static/js/tinycolor-min.js"></script>
+	<script src="/static/js/angularjs-color-picker.js"></script>
+	
+	<!-- CONTENT TOOLS -->
+	<!--<script type="text/javascript" src="/static/js/ContentTools/sandbox/iscroll-lite.js"></script>-->
+	<script src="/static/js/ContentTools/content-tools.min.js"></script>
+  
+	<link rel="stylesheet" href="/static/css/main-admin.css">
+  
+	<script src="/static/js/admin-app.js"></script>
+</head>
+<body ng-controller="postController">
+	<div class="row main_container">
+		<div class="post_sidebar col l2 hide-on-med-and-down">
+			<div class="post_sidebar_menu row menu">
+				<h3 style="display: inline-block;">Admin panel</h3>
+				<ul class="list-unstyled">
+					<li><a href="" ng-click="displayMain()">Back</a></li>
+					<li><a href="" ng-click="displayFrontpage()" >Go to frontpage</a></li>
+					
+					<br />
+					<li><a href="" ng-disabled="display == 'categories'" ng-click="logout()">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<div class="col s12 m12 l10 main">	
+			<div class="editor_wrap">
+				<div class="toolbox" id="aaa"></div>
+				<div class="editor" data-editable data-name="article-body" ng-bind-html="post_html | to_trusted"></div>
+
+				<div class="card submit_post_panel">
+					<form name="submit_post_form">
+						<a href="" id="cancel_button" class="btn-floating btn-small waves-effect waves-light red back_button">
+							<i ng-if="submitPostPanelOpen" ng-click="closeSubmitPostPanel()" id="down_icon" class="material-icons fa fa-arrow-down"></i>
+							<i ng-if="!submitPostPanelOpen" ng-click="goBack()" id="trash_icon" style="font-size: 24px;" class="material-icons zmdi zmdi-delete"></i>
+						</a>
+						
+						<a class="btn-floating btn-large waves-effect waves-light send_button" 
+							href="" 
+							ng-click="submitPostPanelOpen 
+										? submitPost() 
+										: openSubmitPostPanel()" 
+							id="submit_button">
+							<i style="margin-left: -2px;" class="material-icons fa fa-paper-plane">
+								<i ng-if="submit_post_form.$invalid" class="lock_icon fa fa-lock"></i>
+							</i>
+						</a>
+						<div class="card-content">
+							<div class="submit_panel_title_wrap">
+								<h3 class="submit_panel_title">Submit post</h3> 
+								<div class="status_switch switch">
+									<label>
+									  Draft
+									  <input ng-model="post.status" type="checkbox">
+									  <span class="lever"></span>
+									  Publish
+									</label>
+								</div>
+							</div>
+							<div class="input-field">
+								<input ng-model="post.title" type="text" placeholder="Title of your blog post" required />
+							</div>				
+
+							<div class="input-field col s12">
+								
+								<select id="categories_select" ng-model="post.categories" multiple required >
+									<option value="" disabled>Choose categories</option>
+									<option ng-repeat="category in categories" 
+											ng-value="category.category_id">{{category.category}}
+									</option>
+								</select>
+								<label>Categories</label>
+							</div>
+
+							<div class="input-field col s12">
+								<input ng-model="post.date" class="datepicker" type="text" required />
+								<label>Date</label>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>	
+</body>
+</html>

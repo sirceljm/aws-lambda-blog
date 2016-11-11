@@ -1,0 +1,55 @@
+			<div class="row content">
+				<div class="col s12 m9 l9 content_column">	
+					{{ for(var i = 0; i < it.posts.length; i++) { }}
+						<div class="post_title_list">
+							<div class="post_date_list">{{=it.moment(it.posts[i].date).add(1, 'minute').format('D MMMM YYYY')}}</div>
+							<div class="post_name_list"><a href="/post/{{=it.posts[i].post_url}}">{{=it.posts[i].title}}</a></div>
+						</div>
+					{{ } }}
+				</div>
+
+				<div class="col s12 m3 l3 sidebar">
+					<div class="row">
+						<div class="color color_1"></div>
+						<div class="color color_2"></div>
+						<div class="color color_3"></div>
+						<div class="color color_4"></div>
+						<div class="color color_5"></div>
+					</div>
+					<br />
+
+					<a href="/about/"><div class="sidebar_title">About me</div></a>
+					<a href="/contact/"><div class="sidebar_title">Contact</div></a>
+					<br />
+
+					{{? it.categories.length !== 0}}
+						<div class="sidebar_title">Categories</div>
+						{{ for(var i = 0; i < it.categories.length; i++) { }}
+							<a href="/category/{{=it.categories[i].url_title}}/"><div class="sidebar_subtitle">{{=it.categories[i].category}}</div></a>
+						{{ } }}
+						<br />
+					{{?}}
+					
+					<div class="sidebar_title">Recent Posts</div>
+					{{ for(var i = 0; i < it.recent_posts.length; i++) { }}
+						<a href="/post/{{=it.recent_posts[i].post_url}}/"><div class="sidebar_subtitle">{{=it.recent_posts[i].title}}</div></a>
+					{{ } }}
+
+					<br />
+					<a href="/list/"><div class="sidebar_title">All Posts</div></a>
+
+				</div>
+
+			</div>
+
+			<script>
+				$(function(){
+				        var stickyHeaderTop = $('.sidebar').offset().top;
+
+				        $(window).scroll(function(){
+				                if( $(window).scrollTop() > stickyHeaderTop ) {
+				                        $('.sidebar').css({"margin-top": $(window).scrollTop()-stickyHeaderTop});
+				                }
+				        });
+				  });
+			</script>

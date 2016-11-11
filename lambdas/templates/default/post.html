@@ -1,0 +1,85 @@
+					<div class="row content">
+						<div class="col s12 m9 l9 content_column">		
+							<div class="post">	       		
+				        		<div class="post_title">
+				        			<div class="post_name"><h1><a href="/post/{{=it.post.post_url}}">{{=it.post.title}}</a></h1></div>
+									<div class="post_date">{{=it.moment(it.post.date).add(1, 'minute').format('D MMMM YYYY')}}</div>
+				        		</div>
+				        		<div class="post_content">{{=it.post_html}}</div>
+				        		<div class="post_comments">
+									<div class="share_icons">
+										<a href="https://www.facebook.com/sharer/sharer.php?u={{=it.site_base_url}}/post/{{=it.post.post_url}}" 
+											onclick="window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600'); return false;">
+											<i class="fa fa-facebook-official"></i></a>
+										<a href="https://plus.google.com/share?url={{=it.site_base_url}}/post/{{=it.post.post_url}}" 
+											onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+											<i class="fa fa-google-plus"></i></a>
+										<a href="https://www.linkedin.com/shareArticle?mini=true&url={{=it.site_base_url}}/post/{{=it.post.post_url}}" 
+											onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+											<i class="fa fa-linkedin"></i></a>
+										<a href="http://twitter.com/share?text={{=it.site_base_url}}/post/{{=it.post.post_url}}" 
+											onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+											<i class="fa fa-twitter"></i></a>
+										<!--<i class="fa fa-envelope"></i>-->
+									</div>
+								</div>
+				        		<div id="disqus_thread"></div>
+								<script>
+								    (function() {
+								        var d = document, s = d.createElement('script');
+								        
+								        s.src = '//{{=it.disqus_subdomain}}.disqus.com/embed.js';
+								        
+								        s.setAttribute('data-timestamp', + new Date());
+								        (d.head || d.body).appendChild(s);
+								    })();
+								</script>
+								<noscript>
+									Please enable JavaScript to view the 
+									<a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+								</noscript>
+							</div>
+						</div>
+						<div class="col s12 m3 l3 sidebar">
+							<div class="row">
+								<div class="color color_1"></div>
+								<div class="color color_2"></div>
+								<div class="color color_3"></div>
+								<div class="color color_4"></div>
+								<div class="color color_5"></div>
+							</div>
+							<br />
+
+							<a href="/about/"><div class="sidebar_title">About me</div></a>
+							<a href="/contact/"><div class="sidebar_title">Contact</div></a>
+							<br />
+
+
+							<div class="sidebar_title">Categories</div>
+							{{ for(var i = 0; i < it.categories.length; i++) { }}
+								<a href="/category/{{=it.categories[i].url_title}}/"><div class="sidebar_subtitle">{{=it.categories[i].category}}</div></a>
+							{{ } }}
+							<br />
+							
+							<div class="sidebar_title">Recent Posts</div>
+							{{ for(var i = 0; i < it.recent_posts.length; i++) { }}
+								<a href="/post/{{=it.recent_posts[i].post_url}}/"><div class="sidebar_subtitle">{{=it.recent_posts[i].title}}</div></a>
+							{{ } }}
+
+							<br />
+							<a href="/list/"><div class="sidebar_title">All Posts</div></a>
+						</div>
+					</div>
+				</div>
+
+				<script>
+					$(function(){
+					        var stickyHeaderTop = $('.sidebar').offset().top;
+
+					        $(window).scroll(function(){
+					                if( $(window).scrollTop() > stickyHeaderTop ) {
+					                        $('.sidebar').css({"margin-top": $(window).scrollTop()-stickyHeaderTop});
+					                }
+					        });
+					  });
+				</script>

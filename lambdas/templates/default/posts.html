@@ -1,0 +1,105 @@
+			<div class="row content">
+				<div class="col s12 m9 l9 content_column">	
+					{{ for(var i = it.page * it.no_posts_per_page; i < (it.page * it.no_posts_per_page) + it.no_posts_per_page; i++) { }}
+						{{? it.posts[i] && typeof it.posts[i].html !== undefined}}
+						<div class="post">	
+							<div class="post_title">
+								<div class="post_name"><h1><a href="/post/{{=it.posts[i].post_url}}">{{=it.posts[i].title}}</a></h1></div>
+								<div class="post_date">{{=it.moment(it.posts[i].date).add(1, 'minute').format('D MMMM YYYY')}}</div>
+							</div>
+							<div class="post_content">{{=it.posts_html[it.posts[i].html]}}</div>
+
+							<div class="post_comments">
+								<a class="comments_link" href="/post/{{=it.posts[i].post_url}}#disqus_thread">Comments</a>
+								<div class="share_icons">
+									<a href="https://www.facebook.com/sharer/sharer.php?u={{=it.site_base_url}}/post/{{=it.posts[i].post_url}}" 
+										onclick="window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600'); return false;">
+										<i class="fa fa-facebook-official"></i></a>
+									<a href="https://plus.google.com/share?url={{=it.site_base_url}}/post/{{=it.posts[i].post_url}}" 
+										onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+										<i class="fa fa-google-plus"></i></a>
+									<a href="https://www.linkedin.com/shareArticle?mini=true&url={{=it.site_base_url}}/post/{{=it.posts[i].post_url}}" 
+										onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+										<i class="fa fa-linkedin"></i></a>
+									<a href="http://twitter.com/share?text={{=it.site_base_url}}/post/{{=it.posts[i].post_url}}" 
+										onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+										<i class="fa fa-twitter"></i></a>
+									<!--<i class="fa fa-envelope"></i>-->
+								</div>
+							</div>
+						</div>
+						{{?}}
+					{{ } }}
+				</div>
+				
+				<div class="col s12 m12 l12 pagination_bottom_wrap hide-on-med-and-up">
+					<div class="col s6 m6 l6 pagination_bottom" style="text-align: left;">
+						{{? it.page > 0}}
+						<a href="/page/{{=it.page-1}}"><i class="fa fa-arrow-left" ></i> previous page</<a>
+						{{?}}
+					</div>
+
+					<div class="col s6 m6 l6 pagination_bottom" style="text-align: right;">
+						{{? it.page < it.last_page}}
+						<a href="/page/{{=it.page+1}}">next page <i class="fa fa-arrow-right" ></i></a>
+						{{?}}
+					</div>
+				</div>
+
+				<div class="col s12 m3 l3 sidebar">
+					<div class="row">
+						<div class="color color_1"></div>
+						<div class="color color_2"></div>
+						<div class="color color_3"></div>
+						<div class="color color_4"></div>
+						<div class="color color_5"></div>
+					</div>
+					<br />
+
+					<a href="/about/"><div class="sidebar_title">About me</div></a>
+					<a href="/contact/"><div class="sidebar_title">Contact</div></a>
+					<br />
+
+					{{? it.categories.length !== 0}}
+						<div class="sidebar_title">Categories</div>
+						{{ for(var i = 0; i < it.categories.length; i++) { }}
+							<a href="/category/{{=it.categories[i].url_title}}/"><div class="sidebar_subtitle">{{=it.categories[i].category}}</div></a>
+						{{ } }}
+						<br />
+					{{?}}
+					
+					<div class="sidebar_title">Recent Posts</div>
+					{{ for(var i = 0; i < it.recent_posts.length; i++) { }}
+						<a href="/post/{{=it.recent_posts[i].post_url}}/"><div class="sidebar_subtitle">{{=it.recent_posts[i].title}}</div></a>
+					{{ } }}
+
+					<br />
+					<a href="/list/"><div class="sidebar_title">All Posts</div></a>
+				</div>
+
+				<div class="col s12 m12 l12 pagination_bottom_wrap hide-on-small-only">
+					<div class="col s6 m6 l6 pagination_bottom" style="text-align: left;">
+						{{? it.page > 0}}
+						<a href="/page/{{=it.page-1}}"><i class="fa fa-arrow-left" ></i> previous page</<a>
+						{{?}}
+					</div>
+
+					<div class="col s6 m6 l6 pagination_bottom" style="text-align: right;">
+						{{? it.page < it.last_page}}
+						<a href="/page/{{=it.page+1}}">next page <i class="fa fa-arrow-right" ></i></a>
+						{{?}}
+					</div>
+				</div>
+			</div>
+
+			<script>
+				$(function(){
+				        var stickyHeaderTop = $('.sidebar').offset().top;
+
+				        $(window).scroll(function(){
+				                if( $(window).scrollTop() > stickyHeaderTop ) {
+				                        $('.sidebar').css({"margin-top": $(window).scrollTop()-stickyHeaderTop});
+				                }
+				        });
+				  });
+			</script>

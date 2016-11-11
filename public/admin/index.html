@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="utf-8">
+	<title>Admin panel</title>
+
+	<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1.0, user-scalable=no">
+	
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Special+Elite" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Averia+Sans+Libre:700" rel="stylesheet">
+	
+	<link rel="stylesheet" href="/static/css/main-admin.css">
+
+	<script src="/static/js/jquery.min.js"></script>
+	<link href="/static/js/materialize/css/materialize.min.css" rel="stylesheet" >
+	<script src="/static/js/materialize/js/materialize.min.js"></script>
+
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+        
+	
+	<script src="/static/js/angular.min.js"></script>
+	<script src="/static/js/angular-cookies.min.js"></script>
+	<script src="/static/js/jwt-decode.min.js"></script>
+	<script src="/static/js/angular-base64-upload.min.js"></script>
+	<script src="/static/js/moment.min.js"></script>
+	<script src="/static/js/hammer.min.js"></script>
+	<script src="/static/js/lodash.min.js"></script>
+	<script src="/static/js/angular-input-modified.min.js"></script>
+	<link href="/static/js/angularjs-color-picker.css" rel="stylesheet" />
+	<script src="/static/js/tinycolor-min.js"></script>
+	<script src="/static/js/angularjs-color-picker.js"></script>
+	
+	<script src="/static/js/admin-app.js"></script>
+</head>
+<body style="overflow: hidden;" ng-controller="mainController">
+  <!-- Modal Structure -->
+  <div id="loginModal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+		<div class="row">
+		  <h4 class="col s12">Login</h4>
+		</div>
+      <div class="row">
+		<div class="col s12">Welcome to AWS Blog admin section. Before you continue you will have to provide a password.</div>
+	  </div>
+		<br />
+		<div class="row">
+			<div class="input-field col s12">
+				<i class="material-icons prefix">lock</i>
+			  <input id="password" type="password" class="validate" ng-model="password">
+			  <label for="password" data-error="Wrong password">Password</label>
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer">
+		
+      <a href="#!" class="modal-action waves-effect waves-green btn-flat" ng-click="login()">Login</a>
+    </div>
+  </div>
+  
+  <div id="uploadImageModal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+		<div class="row">
+		  <h4 class="col s12 m12 l12">Upload image</h4>
+		</div>
+		<br />
+		<div class="row">
+			<div class="input-field col s12 m12 l12">
+				<div class="file-field input-field">
+				  <div class="btn">
+					<span>File</span>
+					<input type="file" ng-model="template.image" accept="image/*" base-sixty-four-input>
+				  </div>
+				  <div class="file-path-wrapper">
+					<input class="file-path validate" type="text"  placeholder="Upload header image">
+				  </div>
+				</div>
+			</div>
+		</div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-action waves-effect waves-green btn-flat" ng-click="submitUploadedImage(template.image)">Submit</a>
+    </div>
+  </div>
+          
+		  
+	<div class="row main_container">
+		<div class="post_sidebar col l2 hide-on-med-and-down">
+			<div class="post_sidebar_menu row menu">
+			<h3 style="display: inline-block;">Admin panel</h3>
+				<ul class="list-unstyled">
+					<li><a href="" ng-disabled="display == 'posts'" ng-click="displayPosts()">Posts</a></li>
+					<li><a href="" ng-disabled="display == 'categories'" ng-click="displayCategories()">Categories</a></li>
+					<li><a href="" ng-disabled="display == 'settings'" ng-click="displaySettings()">Settings</a></li>
+					<li><a href="/" >Go to frontpage</a></li>
+					
+					<br />
+					<li><a href="" ng-disabled="display == 'categories'" ng-click="logout()">Logout</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<div class="hide-on-large-only menu_wrap amber lighten-4">
+			<div class="menu_open">
+				<i id="menu_home_button" class="menu_home_button brown-text material-icons small">home</i>
+				<div class="row">
+					<button ng-disabled="display == 'posts'" 
+							style="width: 200px;" 
+							ng-click="displayPosts()" 
+							class="menu_button btn brown">Posts
+					</button>
+				</div>
+				<div class="row">
+					<button ng-disabled="display == 'categories'" 
+							style="width: 200px;" 
+							ng-click="displayCategories()" 
+							class="menu_button btn brown">Categories
+					</button>
+				</div>
+				
+				<div class="row">
+					<button ng-disabled="display == 'settings'" 
+							style="width: 200px;" 
+							ng-click="displaySettings()" 
+							class="menu_button btn brown">Settings
+					</button>
+				</div>
+				
+				<div class="row">
+					<a 
+							style="width: 200px;" 
+							href="/" 
+							class="menu_button btn brown">Go to frontpage
+					</a>
+				</div>
+				
+				<div class="row">
+					<button
+							style="width: 200px;" 
+							ng-click="logout()" 
+							class="menu_button btn red">Logout
+					</button>
+				</div>
+				<!--<div class="row"><button style="width: 200px;" href="/admin/settings" class="menu_button btn brown">Settings</a></div>-->
+			</div>
+			<div id="menu" class="menu_bg">
+				<div class="menu_left_column">
+					<div class="menu_left_wrap">
+						<div class="menu_left"></div>
+					</div>
+					<div class="menu_left_fill">
+						</div>
+				</div><div class="menu_mid_wrap">
+					<div class="menu_mid"></div>
+					<div class="menu_mid_below"></div>
+				</div><div class="menu_right_column">
+					<div class="menu_right_wrap">
+						<div class="menu_right"></div>
+					</div>
+					<div class="menu_right_fill">
+						</div>
+				</div>
+			</div>
+		</div>
+		<div class="main_panel_wrap col s12 m12 l10 white">
+			<div ng-show="display == 'posts'" id="posts_panel" class="main_panel">	
+				<div class="row">
+					<div class="col s12 m12 l12">&nbsp;</div>
+				</div>
+				<div class="row">
+					<div class="col s6 m6 l6 header_title">blog posts.</div>
+					<div class="col s6 m6 l6">
+						<button 
+							class="btn right" 
+							ng-click="addPost()">Add post</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col s12 m12 l12">
+						<table class="bordered">
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Title</th>
+									<th class="hide-on-med-and-down">Status</th>
+									<th class="hide-on-med-and-down">Categories</th>
+									<th class="hide-on-med-and-down">Actions</th>
+									<th class="hide-on-large-only"></th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<tr ng-repeat="post in posts | orderBy:'-date' track by $index">
+									<td>{{displayDate(post.date)}}</td>
+									<td class="pos-r">
+										<div href="" ng-if="post.post_status == 'published'" 
+											class="watermark green-text text-lighten-4 hide-on-large-only">PUBLISHED</div>
+										<div href="" ng-if="post.post_status == 'draft'" 
+											class="watermark orange-text text-lighten-4 hide-on-large-only">DRAFT</div>
+										<span class="pos-r" style="z-index: 2;"> {{post.title}}</span>
+									</td>
+									<td class="hide-on-med-and-down">{{post.post_status}}</td>
+									<td class="hide-on-med-and-down">{{post.categories_names.join(', ')}}</td>
+									<td class="hide-on-med-and-down">
+										<a href="" ng-if="post.post_status == 'published'" ng-click="unpublishPost(post)">Unpublish</a>
+										<a href="" ng-if="post.post_status == 'draft'" ng-click="publishPost(post)">Publish</a> | 
+										<a href="" ng-click="editPost(post.post_id, post.date)">Edit</a> | 
+										<a style="color: red;" ng-href="#modal_delete_{{$index}}">Delete</a>
+									</td>
+									<td class="hide-on-large-only">
+										<i class="right dropdown-button material-icons more_icon medium" 
+											data-beloworigin="false"
+											data-gutter="20"
+											ng-attr-data-activates="dropdown_{{$index}}">more_vert</i>
+										<ul ng-attr-id="dropdown_{{$index}}" class='dropdown-content' >
+											<li >
+												<a href="#" ng-if="post.post_status == 'published'" ng-click="unpublishPost(post)">Unpublish</a>
+												<a href="#" ng-if="post.post_status == 'draft'" ng-click="publishPost(post)">Publish</a>
+											</li>
+											<li role="separator" class="divider"></li>
+											<li><a href="" ng-click="editPost(post.post_id, post.date)">Edit</a></li>
+											<li role="separator" class="divider"></li>
+											<li><a style="color: red;" ng-href="#modal_delete_{{$index}}">Delete</a></li>
+										</ul>
+									</td>
+									
+									
+						  
+								</tr>
+							</tbody>
+						</table>
+						
+						
+  
+					</div>
+				</div>
+				
+				<!-- Modal Structure -->
+					  <div ng-repeat="post in posts | orderBy:'-date' track by $index" ng-attr-id="modal_delete_{{$index}}" class="modal">
+						<div class="modal-content">
+						  <h4>Delete post?</h4>
+						  <p>Are you sure you want to delete: <strong>{{post.title}}</strong>?</p>
+						</div>
+						<div class="modal-footer">
+							<a href="#!" class=" modal-action modal-close waves-effect waves-red btn red" ng-click="deletePost(post)">Yes, delete post</a>
+							<a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">No</a>
+						</div>
+					  </div>
+			</div>
+			<div ng-show="display == 'categories'" id="categories_panel" class="main_panel white">	
+				<div class="row">
+					<div class="col s12 m12 l12">&nbsp;</div>
+				</div>
+				<div class="row">
+					<div class="col s12 m12 l12 header_title">categories.</div>
+				</div>
+
+				<div class="row">
+					<div class="input-field col s7 m7 l7">
+						<input id="addCategory" type="text" ng-model="new_category"/>
+						<label for="addCategory">New category</label>
+					</div>
+					<div class="col s5 m5 l5 right">
+						<button 
+							style="margin-top: 16px;" 
+							ng-disabled="!new_category" 
+							class="right btn" 
+							ng-click="addCategory(new_category)">Add</button>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col s12 m12 l12">
+						<table class="bordered">
+							<thead>
+								<tr>
+									<th>Category</th>
+									<th class="hide-on-med-and-down">No. of posts</th>
+									<th class="hide-on-med-and-down">Actions</th>
+									<th class="hide-on-large-only"></th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<tr ng-repeat="category in categories track by $index">
+									<td>
+										<div class="input-field">
+										  <input ng-disabled="!category.editing" 
+												ng-attr-id="category_input_{{category.category_id}}" type="text" class="edit_category_input" 
+												ng-model="category.category"/>
+										  <label ng-class="{active: category.editing}" ng-attr-for="'category_input_'+category.category_id">{{category.editing ? "edit: "+category.category : ""}}</label>
+										</div>
+									</td>
+									<td class="hide-on-med-and-down">{{category.no_posts}}</td>
+									<td class="hide-on-med-and-down">
+										<button class="btn" ng-disabled="editing_categories || $index == 0" ng-click="moveCategory(category, $index, 'up')"><i class="material-icons">keyboard_arrow_up</i></button>
+										<button class="btn" ng-disabled="editing_categories || $index == categories.length-1" ng-click="moveCategory(category, $index, 'down')"><i class="material-icons">keyboard_arrow_down</i></button>
+										<button class="btn" ng-disabled="moving_categories || (editing_categories && !category.editing)" ng-class="{green: category.editing}" 
+											ng-click="category.editing ? editCategorySave(category, $index) : editCategory(category, $index)">{{category.editing ? 'Save' : 'Edit'}}</button>
+										<button class="btn red" ng-disabled="moving_categories || editing_categories" href="" ng-click="deleteCategory(category, $index)">Delete</button>
+									</td>
+									<td class="hide-on-large-only right-align">
+										<i class="dropdown-button material-icons more_icon medium" 
+											data-beloworigin="false"
+											data-gutter="-20"
+											ng-attr-data-activates="dropdown_{{category.category_id}}">more_vert</i>
+										<ul ng-attr-id="dropdown_{{category.category_id}}" class='dropdown-content' >
+											<li><a href="" ng-click="editCategory(category, $index)">Edit</a></li>
+											<li role="separator" class="divider"></li>
+											<li><a style="color: red;" href="" ng-click="deleteCategory(category, $index)">Delete</a></li>
+										</ul>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			
+			<div ng-show="display == 'settings'" id="settings_panel" class="main_panel white">	
+				<form name="settings_form">
+					<div class="row">
+						<div class="col s12 m12 l12">&nbsp;</div>
+					</div>
+					<div class="row">
+						<div class="col s6 m6 l6 header_title">settings.</div>
+						<div class="col s6 m6 l6">
+							<button 
+								ng-disabled="!settings_form.modified || !settings_form.$valid" 
+								class="btn right" 
+								ng-click="saveSettings(settings)">Save</button>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col s12 m12 l12">&nbsp;</div>
+					</div>
+					
+					<div class="row">
+						<div class="input-field col s12 m12 l12">
+							<h4>General</h4>
+						</div>
+						<div class="input-field col s12 m6 l6">
+							<input placeholder="" ng-model="settings.website_title" id="website_title" type="text" class="validate" required>
+							<label>Website title</label>
+						</div>
+						
+						<div class="input-field col s12 m6 l6">
+							<input placeholder="" ng-model="settings.no_posts_per_page" id="no_posts_per_page" type="number" class="validate" required>
+							<label>No. posts per page</label>
+						</div>
+						
+						<div class="input-field col s12 m6 l6">
+							<input placeholder="" ng-model="settings.header_title" id="header_title" type="text" class="validate" required>
+							<label>Page header title</label>
+						</div>
+						
+						<div class="input-field col s12 m6 l6">
+							<input placeholder="" ng-model="settings.header_desc" id="header_desc" type="text" class="validate">
+							<label>Page header description</label>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="input-field col s12 m12 l12">
+							<h4>Image processing</h4>
+						</div>
+						<div class="input-field col s12 m6 l6">
+							<input placeholder="" ng-model="settings.image_max_dimensions.width" id="max_width" type="number" class="validate" required>
+							<label for="max_width">Resize images <b>width</b> to max pixels:</label>
+						</div>
+						<div class="input-field col s12 m6 l6">
+							<input placeholder="" ng-model="settings.image_max_dimensions.height" id="max_width" type="number" class="validate" required>
+							<label class="active" for="max_width">Resize images <b>height</b> to max pixels:</label>
+						</div>
+					</div>
+					
+					<div class="row">					
+						<div class="input-field col s12 m12 l12">
+							<h4>Template</h4>
+						</div>
+						<div class="input-field col s12 m12 l12">
+							<select id="templates_select" ng-model="settings.template.header_image" ng-change="templateChange()" class="icons">
+								<option value="" disabled selected>Choose your header image</option>
+								<option value="upload_new" >Upload new image</option>
+								<option value="{{template.image}}" ng-repeat="template in templates track by $index" data-icon="{{template.image}}" >Template {{$index+1}}</option>
+							</select>
+							<label>Available template images</label>
+						</div>
+						
+						<!--
+						<div class="input-field col s12 m12 l12">
+							<div class="file-field input-field">
+							  <div class="btn">
+								<span>File</span>
+								<input type="file">
+							  </div>
+							  <div class="file-path-wrapper">
+								<input class="file-path validate" type="text" placeholder="Upload header image">
+							  </div>
+							</div>
+						</div>-->
+						
+						<div class="col s12 m12 l12">
+							<h5>Color palette</h5>
+							<table>
+							<tr>
+								<th>
+									Color type
+								</th>
+								<th>
+									Color
+								</th>
+								<th>
+									Title
+								</th>
+								<th>
+									Text
+								</th>
+							<tr>
+							<tr>
+								<td>
+									Vibrant
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.Vibrant"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.VibrantTitle"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.VibrantText"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Muted
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.Muted"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.MutedTitle"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.MutedText"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Dark Vibrant
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.DarkVibrant"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.DarkVibrantTitle"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.DarkVibrantText"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Dark Muted
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.DarkMuted"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.DarkMutedTitle"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.DarkMutedText"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Light Vibrant
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.LightVibrant"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.LightVibrantTitle"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.LightVibrantText"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Light Muted
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.LightMuted"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.LightMutedTitle"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+								<td>
+									<color-picker
+										ng-model="settings.template.palette.LightMutedText"
+										options="{
+											format: 'hex',
+											alpha: false}"
+									></color-picker>
+								</td>
+							</tr>
+						</div>
+						
+						
+					</div>
+					
+						
+				</form>
+			</div>
+			
+		</div>
+	</div>
+</body>
+</html>

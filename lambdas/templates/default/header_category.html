@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="robots" content="index, follow" />
+		<title>{{=it.website_title}}</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1.0, user-scalable=no">
+		
+		<link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Lora:700i" rel="stylesheet">
+		<link rel="stylesheet" href="/static/js/fontawesome/css/font-awesome.min.css">
+
+		<link rel="stylesheet" href="/static/js/materialize/css/materialize.min.css">
+		<link rel="stylesheet" href="/static/css/main.css">
+
+		<script src='/static/js/jquery.min.js'></script>
+		<script src='/static/js/materialize/js/materialize.min.js'></script>
+		
+		<script src='https://www.google.com/recaptcha/api.js'></script>
+
+		<style>
+			.content{
+				background-color: {{=it.template_settings.palette.Vibrant}};
+			}
+			.content_column h1{
+				color: {{=it.template_settings.palette.DarkVibrant}};
+			}
+			.sidebar{
+				color: {{=it.template_settings.palette.VibrantText}};
+			}
+
+			.post_comments{
+				background-color: {{=it.template_settings.palette.Muted}};
+				color: {{=it.template_settings.palette.MutedTitle}};
+			}
+
+			.footer{
+				background-color: {{=it.template_settings.palette.DarkMuted}};
+				color: {{=it.template_settings.palette.DarkMutedTitle}};
+			}
+
+			.header{
+	        	background-image: url({{=it.template_settings.header_image}})
+	        }
+
+		    .color_1{
+		    	background-color: {{=it.template_settings.palette.Vibrant}};
+		    }
+		    .color_2{
+		    	background-color: {{=it.template_settings.palette.Muted}};
+		    }
+		    .color_3{
+		    	background-color: {{=it.template_settings.palette.DarkVibrant}};
+		    }
+		    .color_4{
+		    	background-color: {{=it.template_settings.palette.DarkMuted}};
+		    }
+		    .color_5{
+		    	background-color: {{=it.template_settings.palette.LightVibrant}};
+		    }
+
+		</style>
+	</head>
+	<body>
+		<div class="page_container">
+			<div class="row header">
+				<div class="col s12 m12 l12 title">
+					<a href="/"><h1>{{=it.header_title}}</h1>
+					<h2>{{=it.header_desc}}</h2></a>
+				</div>
+				
+				<div class="col s12 m12 l12" style="text-align: right;"">
+					<a class='dropdown-button btn hide-on-med-and-up' style="background-color: {{=it.template_settings.palette.DarkVibrant}}" href='#' data-alignment="right" data-activates='dropdown1' data-constrainwidth="false">
+						<i class="fa fa-bars"></i>
+					</a>
+
+				  <!-- Dropdown Structure -->
+				  <ul id='dropdown1' class='dropdown-content'>
+				    <li><a href="#!" style="font-size:20px; color: {{=it.template_settings.palette.DarkVibrant}}">About me</a></li>
+				    <li class="divider"></li>
+
+				    <li><a href="#!" style="font-size:20px; color: {{=it.template_settings.palette.DarkVibrant}}">Contact</a></li>
+				    <li class="divider"></li>
+
+				    <li><span style="font-size:20px; color: {{=it.template_settings.palette.DarkVibrant}}">Categories</span></li>
+				    {{ for(var i = 0; i < it.categories.length; i++) { }}
+						<li><a href="/category/{{=it.categories[i].url_title}}/">{{=it.categories[i].category}}</a></li>
+					{{ } }}
+				    <li class="divider"></li>
+
+					<li><a href="/list/"><div class="sidebar_title">All Posts</div></a></li>
+
+				    <!--<li><span style="font-size:20px; color: {{=it.template_settings.palette.DarkVibrant}}">Recent posts</span></li>
+				    {{ for(var i = 0; i < it.recent_posts.length; i++) { }}
+						<li><a href="/post/{{=it.recent_posts[i].post_url}}/">{{=it.recent_posts[i].title}}</a></li>
+					{{ } }}-->
+				  </ul>
+				</div>
+
+				
+				<div class="col s6 m6 l6 pagination" style="text-align: left;">
+					{{? it.page > 0}}
+					<a href="/category/{{=it.category_name}}/page/{{=it.page-1}}"><i class="fa fa-arrow-left" ></i> previous page</<a>
+					{{?}}
+				</div>
+				
+
+				<div class="col s6 m6 l6 pagination" style="text-align: right;">
+					{{? it.page < it.last_page}}
+					<a href="/category/{{=it.category_name}}/page/{{=it.page+1}}">next page <i class="fa fa-arrow-right" ></i></a>
+					{{?}}
+				</div>
+
+				<script type="text/javascript">
+					$(document).ready(function() {
+						$('select').material_select();
+					});
+				</script>
+			</div>
+			
+			
+
+
+
+			

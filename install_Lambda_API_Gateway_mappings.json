@@ -1,0 +1,98 @@
+{
+  "about": {
+  		"resource":"/about",
+  		"lambda_arn": ""
+  	},
+  "get": {
+  		"resource": ["/", "/page", "/page/{page}"],
+  		"lambda_arn": ""  	
+  },
+  "contact": {
+  		"resource":"/contact",
+  		"lambda_arn": ""  	
+  },
+  "getPost": {
+  		"resource":"/post/{post-id}",
+  		"lambda_arn": ""  	
+  },
+  "getPostsByCategory": {
+  		"resource": ["/category/{category-id}", "/category/{category-id}/page", "/category/{category-id}/page/{page}"],
+  		"lambda_arn": ""  	
+  },
+  "login": {
+  		"resource":"/login",
+  		"lambda_arn": ""  	
+  },
+  "sendMessage": {
+  		"resource":"/send-message",
+  		"lambda_arn": ""  	
+  },
+  "addCategory": {
+  		"resource":"/add-category",
+  		"lambda_arn": ""  	
+  },
+  "deletePost": {
+  		"resource":"/delete-post",
+  		"lambda_arn": ""  	
+  },
+  "editCategory": {
+  		"resource":"/edit-category",
+  		"lambda_arn": ""  	
+  },
+  "getCategories": {
+  		"resource":"/get-categories",
+  		"lambda_arn": ""  	
+  },
+  "getPostAdmin": {
+  		"resource":"/get-post-admin",
+  		"lambda_arn": ""  	
+  },
+  "getSettings": {
+  		"resource":"/get-settings",
+  		"lambda_arn": ""  	
+  },
+  "getTemplates": {
+  		"resource":"/get-templates",
+  		"lambda_arn": ""  	
+  },
+  "listPostsAdmin": {
+  		"resource":"/list-posts-admin",
+  		"lambda_arn": ""  	
+  },
+  "moveCategory": {
+  		"resource":"/move-category",
+  		"lambda_arn": ""  	
+  },
+  "publishPost": {
+  		"resource":"/publish-post",
+  		"lambda_arn": ""  	
+  },
+  "removeCategory": {
+  		"resource":"/remove-category",
+  		"lambda_arn": ""  	
+  },
+  "setSettings": {
+  		"resource":"/set-settings",
+  		"lambda_arn": ""  	
+  },
+  "unpublishPost": {
+  		"resource":"/unpublish-post",
+  		"lambda_arn": ""  	
+  },
+  "uploadImage": {
+  		"resource":"/upload-image",
+  		"lambda_arn": ""  	
+  },
+  "uploadPost": {
+  		"resource":"/submit-post",
+  		"lambda_arn": ""  	
+  },
+  "uploadTemplateImage": {
+  		"resource":"/upload-template-image",
+  		"lambda_arn": ""  	
+  },
+  "listPosts": {
+      "resource":"/list",
+      "lambda_arn": ""    
+  }
+}

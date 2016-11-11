@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en-US" class=" html_boxed ">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="robots" content="index, follow" />
+		<title>S-Media blog | Software, electronics and 3D printing explorations</title>
+
+		<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato" />
+
+		<link rel="stylesheet" href="/static/css/grid.css" type="text/css" media="screen">
+		<link rel="stylesheet" href="/static/css/base.css" type="text/css" media="screen">
+		<link rel="stylesheet" href="/static/css/layout.css" type="text/css" media="screen">
+		<link rel="stylesheet" href="/static/css/sentence.css" type="text/css" media="screen">
+
+		<link rel="stylesheet" href="/static/css/main.css" type="text/css" media="screen">
+	</head>
+	<body id="top" class="home blog right_sidebar boxed droid_sans">
+		<div id="wrap_all">
+			<div class="container_wrap">
+				<div class="container">
+					<div id="overflow_bg"></div>
+					<div id="sidebar_bg"></div>
+					<div id="header" class="seven units alpha offset-by-one">
+
+						<h1 class="logo"><a href="/"><img src="/static/img/logo-v2.2.png" alt="S-Media blog"></a></h1>
+						<ul class="social_bookmarks">
+							<li class="rss"><a href="/feed/">RSS</a></li>
+						</ul>							
+						<div class="main_menu main_menu" data-selectname="Select a page">
+							<div class="menu-main-menu-container">
+								<ul id="menu-main-menu" class="menu no_description_menu">
+									{{ for(var i = 0; i < it.categories.length; i++) { }}
+									<li class="menu-item menu-item-type-taxonomy menu-item-object-category">
+										<a href="/category/{{=it.categories[i].url_title}}/">{{=it.categories[i].category}}</a>
+									</li>
+									{{ } }}
+									<!--<li id="menu-item-60" class="menu-item menu-item-type-taxonomy menu-item-object-category">
+										<a href="/category/software-development/"><strong>Software development</strong></a>
+									</li>
+									<li id="menu-item-234" class="menu-item menu-item-type-post_type menu-item-object-page">
+										<a href="/contact/"><strong>Contact</strong></a>
+									</li>-->
+								</ul>
+								<select id="mobileMenu_menu-main-menu" class="mobileMenu" style="display: none;">
+									<option value="">Select a page</option>
+									<option value="/category/software-development/">Software development</option>
+									<option value="/contact/">Contact</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div id="primary" class="eight alpha units">
+						<div id='main'>		
+							<div class='template-blog inner_container'>	
+								<div class='content eight alpha units'>
+									{{ for(var i = 0; i < it.posts.length; i++) { }}
+									<div class='post-entry post-entry-type-standard post-entry-236'>
+										<span class='entry-border-overflow extralight-border'></span>
+										<div class="one unit alpha blog-meta">
+								        	
+								        	<div class="side-container side-container-date">
+								        		
+								        		<div class="side-container-inner">
+								        		
+								        			<span class="date-day">{{=it.moment(it.posts[i].date).add(1, 'minute').format('D')}}</span>
+							   						<span class="date-month">{{=it.moment(it.posts[i].date).format('MMM')}}</span>
+							   						
+								        		</div>
+								        		
+								        	</div>
+											
+										</div>
+										<div class="seven units entry-content">	
+											<h1><a href="/post/{{=it.posts[i].post_url}}">{{=it.posts[i].title}}</a></h1>
+											{{=it.posts_html[i]}}
+
+											<a href="/post/{{=it.posts[i].post_url}}#disqus_thread">Comments</a>
+										</div>
+										
+									</div>
+									{{ } }}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="secondary">
+						<div class="sidebar">
+							<div class="inner_sidebar extralight-border">
+								<div class="main_menu main_menu" data-selectname="Select a page">
+									<div class="menu-main-menu-container">
+										<ul id="menu-main-menu" class="menu no_description_menu">
+											<li id="menu-item-234" class="menu-item menu-item-type-post_type menu-item-object-page">
+												<a href="/about/"><strong>About me</strong></a>
+											</li>
+											<li id="menu-item-234" class="menu-item menu-item-type-post_type menu-item-object-page">
+												<a href="/projects/"><strong>Projects</strong></a>
+											</li>
+											<li id="menu-item-235" class="menu-item menu-item-type-post_type menu-item-object-page">
+												<a href="/contact/"><strong>Contact</strong></a>
+											</li>
+										</ul>	
+									</div>
+								</div>
+								<div id="recent-posts-2" class="main_menu main_menu">
+									<h3 class="widgettitle">Categories</h3>
+									<ul id="menu-main-menu" class="menu no_description_menu">
+										{{ for(var i = 0; i < it.categories.length; i++) { }}
+										<li class="menu-item menu-item-type-taxonomy menu-item-object-category">
+											<a href="/category/{{=it.categories[i].url_title}}/"><strong>{{=it.categories[i].category}}</strong></a>
+										</li>
+										{{ } }}
+									</ul>
+								</div>
+								<div id="recent-posts-2" class="widget widget_recent_entries">
+									<h3 class="widgettitle">Recent Posts</h3>
+									<ul>
+										{{ for(var i = 0; i < it.recent_posts.length; i++) { }}
+										<li>
+											<a href="/post/{{=it.recent_posts[i].post_url}}/">{{=it.recent_posts[i].title}}</a>
+										</li>
+										{{ } }}
+									</ul>
+									<span class="seperator extralight-border"></span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="footer" class="container_wrap ">
+					<div class="container">
+						<div class="one_fourth first">
+							<div class="widget">
+								<h3 class="widgettitle">Interesting links</h3>
+								<span class="minitext">Besides are some interesting links for you! Enjoy your stay :)</span>
+							</div>
+						</div>
+						<div class="one_fourth ">
+							<div class="widget widget_pages">
+								<h3 class="widgettitle">Pages</h3>
+								<ul>
+									<li class="page_item">
+										<a href="/contact/">About me</a>
+									</li>
+									<li class="page_item">
+										<a href="/contact/">Projects</a>
+									</li>
+									<li class="page_item">
+										<a href="/contact/">Contact</a>
+									</li>
+								</ul>
+								<span class="seperator extralight-border"></span>
+							</div>
+						</div>
+						<div class="one_fourth ">
+							<div class="widget widget_categories">
+								<h3 class="widgettitle">Categories</h3>
+								<ul>
+									{{ for(var i = 0; i < it.categories.length; i++) { }}
+									<li class="menu-item menu-item-type-post_type menu-item-object-page">
+										<a href="/category/{{=it.categories[i].url_title}}/">{{=it.categories[i].category}}</a>
+									</li>
+									{{ } }}
+								</ul>
+								<span class="seperator extralight-border"></span>
+							</div>
+						</div>
+						<div class="one_fourth ">
+							<div id="nav_menu-2" class="widget widget_nav_menu">
+								<h3 class="widgettitle">More links</h3>
+								<div class="menu-links-container">
+									<ul id="menu-links" class="menu">
+										<li id="menu-item-63" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-63">
+											<a href="https://github.com/sirceljm">Github</a>
+										</li>
+									</ul>
+								</div>
+								<span class="seperator extralight-border"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="socket" class="container_wrap ">
+					<div class="container">
+						<span class="copyright">© Copyright - <a href="/">www.s-media.si</a></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script id="dsq-count-scr" src="//s-media.disqus.com/count.js" async></script>
+	</body>
+</html>
+	

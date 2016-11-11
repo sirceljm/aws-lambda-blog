@@ -1,0 +1,53 @@
+				<div class="row content">
+					<div class="col s12 m9 l9 content_column">
+						<div class="post">		
+							<div class="post_title">
+								<div class="post_name"><h1>About me</h1></div>
+							</div>	
+							<div class="post_content">
+								<p>Hi, I am a full stack software developer by night and an avid runner, surfer and breakdancer by day. I started with writing simple HTML pages in high school at the informatics course. I quickly became familiar with PHP and MySQL and started programming on more complex dynamic websites on my own. I finished studies at the <strong>Faculty of Computer and Information Science at University of Ljubljana</strong>. 
+								</p>
+								<p>
+								Around that time PHP era slowly started to fade and I devoted my time to learn about mobile applications and programming in the cloud. By now I have mastered the majority of software development concepts and technologies that are required for zero infrastructure and good application scaling. 
+								</p>
+								<p>
+								<strong>I am proficient in Amazon Web Services platform and their services such as EC2, Lambda, DynamoDB, S3, CloudFront, API Gateway, SES and others.</strong> <a href="">One of the projects developed by these technologies exclusively is also this blog.</a> It is running entierly on zero infrastructure higly scalable pay as you go platform using API Gateway, AWS Lambda, DynamoDB, S3 and Cloudfront.
+								</p>
+								<p>Nowdays I primarily develop software in JavaScript but I can find my way around other languages as well: PHP, SQL, Java, C and Python.
+								</p>
+								<p>
+								Regarding frontend and UI design I am fluent with JavaScript libraries: AngularJS, JQuery and Sencha Touch for mobile apps, CSS, SASS and HTML5. I also use Cordova/Phonegap for hybrid mobile apps.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col s12 m3 l3 sidebar">
+						<div class="row">
+							<div class="color color_1"></div>
+							<div class="color color_2"></div>
+							<div class="color color_3"></div>
+							<div class="color color_4"></div>
+							<div class="color color_5"></div>
+						</div>
+						<br />
+
+						<a href="/about/"><div class="sidebar_title">About me</div></a>
+						<a href="/contact/"><div class="sidebar_title">Contact</div></a>
+						<br />
+
+
+						<div class="sidebar_title">Categories</div>
+						{{ for(var i = 0; i < it.categories.length; i++) { }}
+							<a href="/category/{{=it.categories[i].url_title}}/"><div class="sidebar_subtitle">{{=it.categories[i].category}}</div></a>
+						{{ } }}
+						<br />
+						
+						<div class="sidebar_title">Recent Posts</div>
+						{{ for(var i = 0; i < it.recent_posts.length; i++) { }}
+							<a href="/post/{{=it.recent_posts[i].post_url}}/"><div class="sidebar_subtitle">{{=it.recent_posts[i].title}}</div></a>
+						{{ } }}
+
+						<br />
+						<a href="/list/"><div class="sidebar_title">All Posts</div></a>
+					</div>
+				</div>

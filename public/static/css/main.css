@@ -1,0 +1,173 @@
+@font-face {
+    font-family: Nevis;
+    src: url(/static/fonts/nevis.ttf);
+}
+
+body{
+	background-color: #f9f9f9;
+	font-family: 'Lato', sans-serif;
+}
+
+img{
+	max-width: 100%;
+	height: 100%;
+}
+
+h1,h2,h3,h4,h5 {
+	margin: 0;
+}
+
+h1{
+	
+}
+
+h2{
+	font-size: 28px;
+}
+
+h3{
+	font-size: 24px;
+}
+
+a{
+	color: inherit;
+}
+
+.row{
+	margin-bottom: 0px;
+}
+
+.row .col{
+	padding: 0;
+}
+
+.page_container{
+	max-width: 1300px;
+    position: relative;
+    z-index: 1;
+	width: 75%;
+	margin: 10px auto 0px auto;
+	box-shadow: 0 2px 5px 0 black,0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+.header{
+	padding-top: 50px;
+	/*background-color: white;*/
+    /*border: 1px solid #d8d8d8;*/
+    border-top: none;
+    height: 300px;
+    color: white;
+	background-position: center;
+	padding: 0 1.75rem;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.header .title{
+	margin-top: 80px;
+}
+
+.header h1{
+    font-weight: bold;
+	text-shadow: 2px 2px 3px black;
+}
+.header h2{
+	text-shadow: 2px 2px 3px black;
+}
+
+.content{
+	border-top: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.content_column{
+    
+}
+
+.sidebar{
+	text-shadow: 0 2px 5px rgba(0,0,0,0.16),0 2px 10px rgba(0,0,0,0.12);
+	text-align: center;
+	padding: 20px 10px 0px 20px !important;
+}
+
+.sidebar_title{
+    font-size: 24px;
+	margin-bottom: 12px;
+}
+
+.sidebar_subtitle{
+    margin-bottom: 12px;
+}
+
+.post{
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+	background-color: white;
+	margin: -10px -10px 30px 10px !important;
+	
+	border-bottom: 1px solid #ccc;
+	padding: 10px;
+	border-radius: 2px;
+}
+
+.post h1{
+	font-size: 28px;
+	
+}
+
+.post_title{
+	border-bottom: 1px solid grey;
+    padding-bottom: 4px;
+    margin-bottom: 20px;
+	line-height: 1;
+}
+
+.post_date{
+	font-family: 'Lora';
+}
+
+.post_comments{
+	margin-top: 30px;
+	font-size: 22px;
+	margin: 30px -10px 0px -10px;
+	overflow: hidden;
+}
+
+.comments_link{
+	padding: 10px;
+	display: inline-block;
+	line-height: 1;
+}
+
+.color{
+	height: 10px;
+	width: 10px;
+	display: inline-block;
+	border: 1px solid white;
+	margin: 0px 5px;
+}
+
+.share_icons {
+    float: right;
+}
+
+.share_icons i{
+    padding: 10px;
+}
+
+.footer_wrap{
+	max-width: 1280px;
+    position: relative;
+    z-index: 0;
+	width: 74%;
+	margin: 0 auto 40px auto;
+	box-shadow: 0 2px 5px 0 black,0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+.footer{
+	line-height: 1.5;
+	text-align: center;
+	padding: 30px 10px 20px 10px;
+}
+
+.copyright{
+	text-align: center;
+	padding: 10px;
+}
