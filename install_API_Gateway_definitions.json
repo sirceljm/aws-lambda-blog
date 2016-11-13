@@ -1025,7 +1025,7 @@
         },
         "x-amazon-apigateway-integration": {
           "requestTemplates": {
-            "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"articles_table\": \"${stageVariables.articles_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \n    \"image_resize_max_height\": \"${stageVariables.image_resize_max_height}\",\n    \"image_resize_max_width\": \"${stageVariables.image_resize_max_width}\",\n    \n    \"cookie\": \"$input.params('Cookie')\",\n    \"image\": $input.json('$.image')\n}\n"
+            "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"articles_table\": \"${stageVariables.articles_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \n    \"image_resize_max_height\": \"${stageVariables.image_resize_max_height}\",\n    \"image_resize_max_width\": \"${stageVariables.image_resize_max_width}\",\n    \n    \"cookie\": \"$input.params('Cookie')\",\n    \"image\": $input.json('$.image')\n}\n"
           },
           "uri": "",
           "responses": {
@@ -1057,7 +1057,7 @@
         },
         "x-amazon-apigateway-integration": {
           "requestTemplates": {
-            "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"articles_table\": \"${stageVariables.articles_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \n    \"image_resize_max_height\": \"${stageVariables.image_resize_max_height}\",\n    \"image_resize_max_width\": \"${stageVariables.image_resize_max_width}\",\n    \n    \"cookie\": \"$input.params('Cookie')\",\n    \"image\": $input.json('$.image')\n}\n"
+            "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"articles_table\": \"${stageVariables.articles_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \n    \"image_resize_max_height\": \"${stageVariables.image_resize_max_height}\",\n    \"image_resize_max_width\": \"${stageVariables.image_resize_max_width}\",\n    \n    \"cookie\": \"$input.params('Cookie')\",\n    \"image\": $input.json('$.image')\n}\n"
           },
           "uri": "",
           "responses": {
