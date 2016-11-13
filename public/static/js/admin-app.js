@@ -163,7 +163,7 @@ app.controller('mainController', ['$scope', '$http', '$timeout', '$cookies',
 				}
 				
 				$scope.editPost = function(post_id, date){
-					window.location.href = "/admin/post?post_id="+post_id+"&date="+date;
+					window.location.href = "/admin/post/?post_id="+post_id+"&date="+date;
 				}
 				
 				$scope.categories = [];
