@@ -101,7 +101,7 @@ app.controller('mainController', ['$scope', '$http', '$timeout', '$cookies',
 								marginTop: "0"
 							});
 							$(".main_panel_wrap").css({
-								height: "calc(100vh - 84px)"
+								height: ""
 							})
 							moved = 0;
 							$scope.menu_open = false;
@@ -123,7 +123,7 @@ app.controller('mainController', ['$scope', '$http', '$timeout', '$cookies',
 								marginTop: "0"
 							});
 							$(".main_panel_wrap").css({
-								height: "calc(100vh - 84px)"
+								height: ""
 							})
 							moved = 0;
 							$scope.menu_open = false;
@@ -145,7 +145,7 @@ app.controller('mainController', ['$scope', '$http', '$timeout', '$cookies',
 								marginTop: "0"
 							});
 							$(".main_panel_wrap").css({
-								height: "calc(100vh - 84px)"
+								height: ""
 							})
 							moved = 0;
 							$scope.menu_open = false;
@@ -356,7 +356,7 @@ app.controller('mainController', ['$scope', '$http', '$timeout', '$cookies',
 												marginTop: 0
 											})
 											$(".main_panel_wrap").css({
-												height: "calc(100vh - 84px)"
+												height: ""
 											})
 										}else{
 											moved = 335;
@@ -425,7 +425,7 @@ app.controller('mainController', ['$scope', '$http', '$timeout', '$cookies',
 												marginTop: 0
 											})
 											$(".main_panel_wrap").css({
-												height: "calc(100vh - 84px)"
+												height: ""
 											})
 										}else{
 											moved = 335;
@@ -465,6 +465,9 @@ app.controller('mainController', ['$scope', '$http', '$timeout', '$cookies',
 					}
 					$timeout(function(){
 						$('.dropdown-button').dropdown();
+						$('.modal').modal({
+							opacity: .1, 
+						});
 					})
 				});
 				
@@ -504,45 +507,41 @@ app.controller('mainController', ['$scope', '$http', '$timeout', '$cookies',
 				getSettings();
 				getTemplates();
 				
-				$scope.publishPost = function(post, index){
-					
+				$scope.publishPost = function(post){
 					$http({
 					  method: 'POST',
 					  url: '/publish-post',
 					  data:{
-						post_id: post.post_id,
-						date: post.date
+						post_id: post.post_id
 					  }
 					}).then(function successCallback(response) {
-						$scope.posts[index].post_status = 'published';
+						$scope.posts[$scope.posts.indexOf(post)].post_status = 'published';
 					}, function errorCallback(response) {
 					});
 				}
 				
-				$scope.unpublishPost = function(post, index){
+				$scope.unpublishPost = function(post){
 					$http({
 					  method: 'POST',
 					  url: '/unpublish-post',
 					  data:{
-						post_id: post.post_id,
-						date: post.date
+						post_id: post.post_id
 					  }
 					}).then(function successCallback(response) {
-						$scope.posts[index].post_status = 'draft';
+						$scope.posts[$scope.posts.indexOf(post)].post_status = 'draft';
 					}, function errorCallback(response) {
 					});
 				}
 				
-				$scope.deletePost = function(post, index){
+				$scope.deletePost = function(post){
 					$http({
 					  method: 'POST',
 					  url: '/delete-post',
 					  data:{
-						post_id: post.post_id,
-						date: post.date
+						post_id: post.post_id
 					  }
 					}).then(function successCallback(response) {
-						$scope.posts.splice(index, 1);
+						$scope.posts.splice($scope.posts.indexOf(post), 1);
 					}, function errorCallback(response) {
 					});
 				}			
@@ -553,8 +552,8 @@ app.controller('mainController', ['$scope', '$http', '$timeout', '$cookies',
 	}]
 );
 
-app.controller('postController', ['$scope', '$http', '$location', '$timeout',
-	function postController($scope, $http, $location, $timeout) {	
+app.controller('postController', ['$scope', '$http', '$location', '$timeout', '$cookies',
+	function postController($scope, $http, $location, $timeout, $cookies) {	
 		checkIfLoggedIn().then(function(){
 			 var $input = $('.datepicker').pickadate({
 				selectMonths: true,
@@ -572,6 +571,14 @@ app.controller('postController', ['$scope', '$http', '$location', '$timeout',
 			$scope.categories = [];
 			$scope.outputCategories = [];
 			$scope.date = undefined;
+			
+			$scope.displayMain = function(){
+				window.location = "/admin";
+			}
+			
+			$scope.displayFrontpage = function(){
+				window.location = "/";
+			}
 			
 			$scope.postHasCategory = function(post, category_id){
 				if(post.categories){
@@ -599,7 +606,7 @@ app.controller('postController', ['$scope', '$http', '$location', '$timeout',
 						date: post_date
 					  }
 					}).then(function successCallback(response) {
-						console.log(response.data);
+
 						$scope.post.title = response.data.title;
 						$scope.post.status = (response.data.post_status == 'published' ? true : false);
 						$scope.post.date = response.data.date;
@@ -688,11 +695,15 @@ app.controller('postController', ['$scope', '$http', '$location', '$timeout',
 			}
 			
 			editor.addEventListener('saved', function (ev) {
+				console.log("saved");
+				
 				var regions = ev.detail().regions;
+				console.log(regions['article-body']);
+				
 				if(regions['article-body']){
 					$scope.post.content = regions['article-body'];
 				}
-
+				
 				if(!$scope.post.content){
 					$('#toast-container').empty();
 					Materialize.toast(

@@ -41,13 +41,74 @@ a{
 	padding: 0;
 }
 
+
+
 .page_container{
 	max-width: 1300px;
-    position: relative;
-    z-index: 1;
-	width: 75%;
+	position: relative;
+	z-index: 1;
+	width: 90%;
 	margin: 10px auto 0px auto;
 	box-shadow: 0 2px 5px 0 black,0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+.post{
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+	background-color: white;
+	margin: -10px -10px 30px 10px;
+	
+	border-bottom: 1px solid #ccc;
+	padding: 10px;
+}
+
+.sidebar{
+	text-shadow: 0 2px 5px rgba(0,0,0,0.16),0 2px 10px rgba(0,0,0,0.12);
+	text-align: center;
+	padding: 20px 10px 40px 20px !important;
+}
+
+.pagination{
+	text-shadow: 0px 1px 2px black;
+	margin-top: 20px;
+}
+
+.pagination_bottom_wrap{
+    margin-bottom: 10px;
+	padding: 0 1.75rem !important;
+	margin-top: -20px;
+}
+
+
+
+@media screen and (max-width: 600px) {
+    .page_container{
+		width: 100%;
+		margin: 0px auto 0px auto;
+		box-shadow: none;
+	}
+	
+	.post{
+		box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+		background-color: white;
+		margin: 10px 0px 0px 0px;
+		/* border-bottom: 1px solid #ccc; */
+		padding: 10px;
+		/* border-radius: 2px; */
+	}
+	
+	.sidebar{
+		padding: 20px 20px 40px 20px !important;
+		margin-top: 0px !important;
+	}
+	
+	.pagination{
+		margin-top: 30px;
+	}
+	
+	.pagination_bottom_wrap {
+		padding: 0 1.75rem !important;
+		margin-top: 10px;
+	}
 }
 
 .header{
@@ -64,6 +125,7 @@ a{
 
 .header .title{
 	margin-top: 80px;
+	height: 160px;
 }
 
 .header h1{
@@ -82,11 +144,7 @@ a{
     
 }
 
-.sidebar{
-	text-shadow: 0 2px 5px rgba(0,0,0,0.16),0 2px 10px rgba(0,0,0,0.12);
-	text-align: center;
-	padding: 20px 10px 0px 20px !important;
-}
+
 
 .sidebar_title{
     font-size: 24px;
@@ -97,15 +155,7 @@ a{
     margin-bottom: 12px;
 }
 
-.post{
-	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
-	background-color: white;
-	margin: -10px -10px 30px 10px !important;
-	
-	border-bottom: 1px solid #ccc;
-	padding: 10px;
-	border-radius: 2px;
-}
+
 
 .post h1{
 	font-size: 28px;
@@ -117,6 +167,10 @@ a{
     padding-bottom: 4px;
     margin-bottom: 20px;
 	line-height: 1;
+}
+
+.post_name{
+	margin-bottom: 10px;
 }
 
 .post_date{
@@ -170,4 +224,18 @@ a{
 .copyright{
 	text-align: center;
 	padding: 10px;
+}
+
+.post_title_list {
+    margin-top: 20px;
+    padding: 0 1.75rem;
+}
+
+.post_date_list {
+    font-size: 12px;
+    font-style: italic;
+}
+
+.post_name_list {
+    font-weight: bold;
 }
