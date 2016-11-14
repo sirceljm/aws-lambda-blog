@@ -51,8 +51,23 @@ exports.handler = (event, context, callback) => {
         var category_id = _.find(categories, {'url_title': category_name}).category_id;
 
         var posts = yield getBlogPostsFromDB();
-
         var recent_posts = _.clone(posts);
+
+        var category_posts = yield getCategoriesForBlogPosts(category_id);
+
+        for(var i = 0; i < categories.length; i++){
+            if(!_.find(category_posts, {'category_id': categories[i].category_id})){
+                categories.splice(i, 1);
+                i--;
+            }
+        }
+
+        for(var i = 0; i < posts.length; i++){
+            if(posts[i].categories.indexOf(category_id) == -1){
+                posts.splice(i, 1);
+                i--;
+            }
+        }
 
         var posts_html = [];
         var j = 0;
@@ -67,14 +82,6 @@ exports.handler = (event, context, callback) => {
         var resolved_posts_html = yield posts_html;
 
 
-        var category_posts = yield getCategoriesForBlogPosts(category_id);
-
-        for(var i = 0; i < categories.length; i++){
-            if(!_.find(category_posts, {'category_id': categories[i].category_id})){
-                categories.splice(i, 1);
-                i--;
-            }
-        }
 
         var html = doT.template(templates.main_template)({
             header: doT.template(templates.header)({
