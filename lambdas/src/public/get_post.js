@@ -26,8 +26,9 @@ var get_templates = function(template){
 exports.handler = (event, context, callback) => {
     var site_base_url = event.site_base_url;
     var stage_articles_bucket_path = event.articles_bucket_path;
-    var stage_posts_table = event.posts_table;
+    var posts_table = event.posts_table;
     var objects_table = event.objects_table;
+    var categories_posts_table = event.categories_posts_table;
 
     var template = event.template;
     var disqus_subdomain = event.disqus_subdomain;
@@ -46,6 +47,15 @@ exports.handler = (event, context, callback) => {
 
         var post = yield getBlogPostFromDB(post_id);
         var recent_posts = yield getBlogPostsFromDB(); 
+
+        var category_posts = yield getCategoriesForBlogPosts();
+
+        for(var i = 0; i < categories.length; i++){
+            if(!_.find(category_posts, {'category_id': categories[i].category_id})){
+                categories.splice(i, 1);
+                i--;
+            }
+        }
 
         var post_html = yield getBlogPostHtml(post_id);
 
@@ -70,7 +80,9 @@ exports.handler = (event, context, callback) => {
                 disqus_subdomain: disqus_subdomain
             }),
             footer: doT.template(templates.footer)({
-                site_base_url: site_base_url
+                site_base_url: site_base_url,
+                categories: categories,
+                recent_posts: recent_posts,
             }),
         });
 
@@ -82,7 +94,7 @@ exports.handler = (event, context, callback) => {
     function getBlogPostFromDB(post_id){
         return new Promise(function(resolve, reject){
             var params = { 
-                TableName: stage_posts_table,
+                TableName: posts_table,
                 Key:{
                     post_id: post_id
                 }
@@ -102,18 +114,26 @@ exports.handler = (event, context, callback) => {
     function getBlogPostsFromDB(){
         return new Promise(function(resolve, reject){
             var params = { 
-                TableName: stage_posts_table,
-                Limit: 5
+                TableName: posts_table,
+                IndexName: "post_status-date-index",
+                KeyConditionExpression: "post_status = :post_status AND #date > :date",
+                
+                ExpressionAttributeNames: {"#date": "date"},
+
+                ExpressionAttributeValues: {
+                    ":post_status": "published",
+                    ":date": 0
+                },
+                ScanIndexForward: false
             };
 
-            docClient.scan(params, function(err, data) {
+            docClient.query(params, function(err, data) {
                 if (err){
                     reject(err);
                 }else{
                     resolve(data.Items);
                 }
             });
-
         })
     }
 
@@ -136,6 +156,21 @@ exports.handler = (event, context, callback) => {
         })
     }
     
+    function getCategoriesForBlogPosts(){
+        return new Promise(function(resolve, reject){
+            var params = { 
+                TableName: categories_posts_table
+            };
+
+            docClient.scan(params, function(err, data) {
+                if (err){
+                    reject(err);
+                }else{
+                    resolve(data.Items);
+                }
+            });
+        })
+    }
 
     function onerror(err) {
         console.log("ERROR!");

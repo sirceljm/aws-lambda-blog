@@ -104,7 +104,9 @@ exports.handler = (event, context, callback) => {
                 category_name: category_name
             }),
             footer: doT.template(templates.footer)({
-                site_base_url: site_base_url
+                site_base_url: site_base_url,
+                categories: categories,
+                recent_posts: recent_posts,
             }),
         });
 
@@ -146,14 +148,14 @@ exports.handler = (event, context, callback) => {
                 ExpressionAttributeValues: {
                     ":post_status": "published",
                     ":date": 0
-                }
+                },
+                ScanIndexForward: false
             };
 
             docClient.query(params, function(err, data) {
                 if (err){
                     reject(err);
                 }else{
-                    console.log(data);
                     resolve(data.Items);
                 }
             });
