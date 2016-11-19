@@ -1,6 +1,6 @@
 # LambdaBlogPlatform
 AWS LBP - Amazon Web Services Lambda Blog Platform
-
+ ![alt tag](https://s3-us-west-2.amazonaws.com/s-media.si/static/img/LBP_perspective_UI.jpg)
 ## About
 AWS Lambda Blog Platform is a complete blogging solution that uses the following Amazon Web Services for operation
  * API Gateway
@@ -25,7 +25,7 @@ Therefore it is free of any inflexible hardware infrastructure and running expen
   * (install script will add other permisions that are necessary for installation)
 
  * Copy account keys for the user and make a json file that looks like this: 
- ![alt tag](https://s3-us-west-2.amazonaws.com/s-media.si/static/img/user_access_keys.png)
+ ![user_access_keys](https://s3-us-west-2.amazonaws.com/s-media.si/static/img/user_access_keys.png)
 
  ```json
  {
