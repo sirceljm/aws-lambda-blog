@@ -19,7 +19,7 @@ Therefore it is free of any inflexible hardware infrastructure and running expen
  
  * Have an AWS account
  * Create a new user in IAM 
-  * [IAM -> Users -> Add User]
+  * [IAM -> Users -> Add User -> Access type -> check Programmatic access]
  * give the user IAMFullAccess permission 
   * [IAM -> Users -> your_user -> Permissions -> Add permissions -> Attach existing policies directly -> Search for IAMFullAccess -> Next:Review -> Add Permissions] 
   * (install script will add other permisions that are necessary for installation)
