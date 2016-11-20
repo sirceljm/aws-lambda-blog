@@ -24,7 +24,7 @@ exports.handler = (event, context, callback) => {
     var site_base_url = event.site_base_url;
     var posts_table = event.posts_table;
     var categories_posts_table = event.categories_posts_table;
-    var captcha_key = event.captcha_key;
+    var captcha_sitekey = event.captcha_sitekey;
 
     var template = event.template;
 
@@ -63,7 +63,7 @@ exports.handler = (event, context, callback) => {
                 moment: moment,
                 categories: categories,
                 recent_posts: recent_posts,
-                captcha_key: captcha_key
+                captcha_sitekey: captcha_sitekey
             }),
             footer: doT.template(templates.footer)({
                 site_base_url: site_base_url

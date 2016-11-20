@@ -309,7 +309,7 @@
         "x-amazon-apigateway-integration": {
           "type": "aws",
           "requestTemplates": {
-            "application/json": "{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"captcha_key\": \"${stageVariables.recaptcha_privKey}\",\n    \"template\": \"${stageVariables.template}\"\n}\n"
+            "application/json": "{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"captcha_sitekey\": \"${stageVariables.recaptcha_siteKey}\",\n    \"template\": \"${stageVariables.template}\"\n}\n"
           },
           "uri": "",
           "responses": {
