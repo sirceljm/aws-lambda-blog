@@ -20,6 +20,7 @@ module.exports = {
 	"api_gateway_stage_variables" : { /* you can edit all of those options later in API Gateway -> stages */
 		"site_base_url": "https://lbp.example.com", /* full base path of your blog */
 		
+		"recaptcha_siteKey": "no_key", /* default template uses google recaptcha in contact form - paste your captcha site key here*/
 		"recaptcha_privKey": "no_key", /* default template uses google recaptcha in contact form paste your captcha private key here*/
 		"contact_send_email": "me@example.com", /* your email for contact field - make sure it is verified by AWS*/
 		"disqus_subdomain": "my_disqus_subdomain", /* ___.disqus.com/embed.js - default template uses disqus for comments - create a disqus account and paste your subdomain here */
