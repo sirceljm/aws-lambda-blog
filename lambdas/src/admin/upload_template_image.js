@@ -7,7 +7,9 @@ var vibrant = require('node-vibrant');
 
 var AWS = require('aws-sdk');
 var docClient = new AWS.DynamoDB.DocumentClient();
-var s3 = new AWS.S3();
+var s3 = new AWS.S3({
+    signatureVersion: 'v4'
+});
 
 var auth = require('../../lib/auth.js');
 var dynamoObjects = require('../../lib/dynamoObjects.js');
