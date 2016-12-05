@@ -24,7 +24,10 @@ AWS.config.loadFromPath(config.credentials_path);
 
 var iam = new AWS.IAM({apiVersion: '2010-05-08'});
 var lambda = new AWS.Lambda({apiVersion: '2015-03-31'});
-var s3 = new AWS.S3({apiVersion: '2006-03-01'});
+var s3 = new AWS.S3({
+	signatureVersion: 'v4',
+	apiVersion: '2006-03-01'
+});
 var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 var apigateway = new AWS.APIGateway({apiVersion: '2015-07-09'});
 var cloudfront = new AWS.CloudFront({apiVersion: '2016-09-07'});

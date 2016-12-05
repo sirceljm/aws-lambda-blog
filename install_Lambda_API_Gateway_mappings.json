@@ -94,5 +94,9 @@
   "listPosts": {
       "resource":"/list",
       "lambda_arn": ""    
+  },
+  "rss": {
+      "resource":"/rss",
+      "lambda_arn": ""    
   }
 }
