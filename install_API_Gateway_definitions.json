@@ -509,7 +509,7 @@
       }
      },
      "requestTemplates": {
-      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\"\n}\n"
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \n    \"cookie\": \"$input.params('Cookie')\"\n}\n"
      },
      "uri": "",
      "passthroughBehavior": "when_no_templates",
