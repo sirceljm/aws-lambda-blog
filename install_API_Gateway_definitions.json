@@ -1,1 +1,1123 @@
-{"swagger":"2.0","info":{},"basePath":"/prod","schemes":["https"],"paths":{"/":{"get":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"},"headers":{"Content-Type":{"type":"string"}}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200","responseParameters":{"method.response.header.Content-Type":"'text/html'"},"responseTemplates":{"application/json":"$input.path('$')"}}},"requestTemplates":{"application/json":"{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n    \n    \"template\": \"${stageVariables.template}\"\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/about":{"get":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"},"headers":{"Content-Type":{"type":"string"}}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200","responseParameters":{"method.response.header.Content-Type":"'text/html'"},"responseTemplates":{"application/json":"$input.path('$')"}}},"requestTemplates":{"application/json":"{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"template\": \"${stageVariables.template}\"\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/add-category":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"categories_table\": \"${stageVariables.categories_table}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\",\n    \"category\": $input.json('$.category')\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/category/{category-id}":{"get":{"consumes":["application/json"],"produces":["application/json"],"parameters":[{"name":"category-id","in":"path","required":true,"type":"string"}],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"},"headers":{"Content-Type":{"type":"string"}}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200","responseParameters":{"method.response.header.Content-Type":"'text/html'"},"responseTemplates":{"application/json":"$input.path('$')"}}},"requestTemplates":{"application/json":"{\n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"template\": \"${stageVariables.template}\",\n\n  \"method\": \"$context.httpMethod\",\n  \"body\" : $input.json('$'),\n  \"headers\": {\n    #foreach($param in $input.params().header.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().header.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"queryParams\": {\n    #foreach($param in $input.params().querystring.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().querystring.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"pathParams\": {\n    #foreach($param in $input.params().path.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().path.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  }  \n}"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/category/{category-id}/page":{"get":{"consumes":["application/json"],"produces":["application/json"],"parameters":[{"name":"category-id","in":"path","required":true,"type":"string"}],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"},"headers":{"Content-Type":{"type":"string"}}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200","responseParameters":{"method.response.header.Content-Type":"'text/html'"},"responseTemplates":{"application/json":"$input.path(\"$\")"}}},"requestTemplates":{"application/json":"{\n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"template\": \"${stageVariables.template}\",\n\n  \"method\": \"$context.httpMethod\",\n  \"body\" : $input.json('$'),\n  \"headers\": {\n    #foreach($param in $input.params().header.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().header.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"queryParams\": {\n    #foreach($param in $input.params().querystring.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().querystring.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"pathParams\": {\n    #foreach($param in $input.params().path.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().path.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  }  \n}"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/category/{category-id}/page/{page}":{"get":{"consumes":["application/json"],"produces":["application/json"],"parameters":[{"name":"category-id","in":"path","required":true,"type":"string"},{"name":"page","in":"path","required":true,"type":"string"}],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"},"headers":{"Content-Type":{"type":"string"}}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200","responseParameters":{"method.response.header.Content-Type":"'text/html'"},"responseTemplates":{"application/json":"$input.path(\"$\")"}}},"requestTemplates":{"application/json":"{\n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"template\": \"${stageVariables.template}\",\n\n  \"method\": \"$context.httpMethod\",\n  \"body\" : $input.json('$'),\n  \"headers\": {\n    #foreach($param in $input.params().header.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().header.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"queryParams\": {\n    #foreach($param in $input.params().querystring.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().querystring.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"pathParams\": {\n    #foreach($param in $input.params().path.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().path.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  }  \n}"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/contact":{"get":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"},"headers":{"Content-Type":{"type":"string"}}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200","responseParameters":{"method.response.header.Content-Type":"'text/html'"},"responseTemplates":{"application/json":"$input.path('$')"}}},"requestTemplates":{"application/json":"{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"captcha_key\": \"${stageVariables.recaptcha_privKey}\",\n    \"template\": \"${stageVariables.template}\"\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/delete-post":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"posts_table\": \"${stageVariables.posts_table}\",\n\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n\n    \"post_id\": $input.json(\"$.post_id\")\n}"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/edit-category":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n\n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"category_id\": $input.json('$.category_id'),\n    \"category_name\": $input.json('$.category_name')\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/get-categories":{"get":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"categories_table\": \"${stageVariables.categories_table}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\"\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/get-post-admin":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n\n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"post_id\": $input.json(\"$.post_id\")\n}"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/get-settings":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\"\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/get-templates":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\"\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/list":{"get":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"},"headers":{"Content-Type":{"type":"string"}}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200","responseParameters":{"method.response.header.Content-Type":"'text/html'"},"responseTemplates":{"application/json":"$input.path('$')"}}},"requestTemplates":{"application/json":"{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n    \n    \"template\": \"${stageVariables.template}\"\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/list-posts-admin":{"get":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\"\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/login":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"},"headers":{"Set-Cookie":{"type":"string"}}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200","responseParameters":{"method.response.header.Set-Cookie":"integration.response.body.Cookie"},"responseTemplates":{"application/json":"{\n \"success\": $input.json('$.success') \n}"}}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"admin_pass\": \"${stageVariables.admin_pass}\",\n    \"user_pass\": $input.json('$.password'),\n    \"remember_me\": $input.json('$.remember_me')\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/move-category":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"category_id\": $input.json('$.category_id'),\n    \"direction\": $input.json('$.direction')\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/page":{"get":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"},"headers":{"Content-Type":{"type":"string"}}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200","responseParameters":{"method.response.header.Content-Type":"'text/html'"},"responseTemplates":{"application/json":"$input.path('$')"}}},"requestTemplates":{"application/json":"{\n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"template\": \"${stageVariables.template}\",\n\n  \"method\": \"$context.httpMethod\",\n  \"body\" : $input.json('$'),\n  \"headers\": {\n    #foreach($param in $input.params().header.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().header.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"queryParams\": {\n    #foreach($param in $input.params().querystring.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().querystring.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"pathParams\": {\n    #foreach($param in $input.params().path.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().path.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  }  \n}"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/page/{page}":{"get":{"consumes":["application/json"],"produces":["application/json"],"parameters":[{"name":"page","in":"path","required":true,"type":"string"}],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"},"headers":{"Content-Type":{"type":"string"}}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200","responseParameters":{"method.response.header.Content-Type":"'text/html'"},"responseTemplates":{"application/json":"$input.path('$')"}}},"requestTemplates":{"application/json":"{\n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"template\": \"${stageVariables.template}\",\n\n  \"method\": \"$context.httpMethod\",\n  \"body\" : $input.json('$'),\n  \"headers\": {\n    #foreach($param in $input.params().header.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().header.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"queryParams\": {\n    #foreach($param in $input.params().querystring.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().querystring.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"pathParams\": {\n    #foreach($param in $input.params().path.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().path.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  }  \n}"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/post/{post-id}":{"get":{"consumes":["application/json"],"produces":["application/json"],"parameters":[{"name":"post-id","in":"path","required":true,"type":"string"}],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"},"headers":{"Content-Type":{"type":"string"}}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200","responseParameters":{"method.response.header.Content-Type":"'text/html'"},"responseTemplates":{"application/json":"$input.path('$')"}}},"requestTemplates":{"application/json":"{\r\n    \"site_base_url\": \"${stageVariables.site_base_url}\",\r\n\r\n    \"posts_table\": \"${stageVariables.posts_table}\",\r\n    \"objects_table\": \"${stageVariables.objects_table}\",\r\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\r\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\r\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\r\n    \"template\": \"${stageVariables.template}\",\r\n    \"disqus_subdomain\": \"${stageVariables.disqus_subdomain}\",\r\n\r\n  \"method\": \"$context.httpMethod\",\r\n  \"body\" : $input.json('$'),\r\n  \"headers\": {\r\n    #foreach($param in $input.params().header.keySet())\r\n    \"$param\": \"$util.escapeJavaScript($input.params().header.get($param))\" #if($foreach.hasNext),#end\r\n\r\n    #end\r\n  },\r\n  \"queryParams\": {\r\n    #foreach($param in $input.params().querystring.keySet())\r\n    \"$param\": \"$util.escapeJavaScript($input.params().querystring.get($param))\" #if($foreach.hasNext),#end\r\n\r\n    #end\r\n  },\r\n  \"pathParams\": {\r\n    #foreach($param in $input.params().path.keySet())\r\n    \"$param\": \"$util.escapeJavaScript($input.params().path.get($param))\" #if($foreach.hasNext),#end\r\n\r\n    #end\r\n  }  \r\n}"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/publish-post":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"posts_table\": \"${stageVariables.posts_table}\",\n \n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"post_id\": $input.json(\"$.post_id\"),\n    \"date\": $input.json(\"$.date\")\n}"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/remove-category":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"category_id\": $input.json(\"$.category_id\"),\n    \"precedence\": $input.json(\"$.precedence\")\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/rss":{"get":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"},"headers":{"Content-Type":{"type":"string"}}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200","responseParameters":{"method.response.header.Content-Type":"'application/rss+xml'"},"responseTemplates":{"application/json":"$input.path('$')"}}},"requestTemplates":{"application/json":"{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n    \n    \"template\": \"${stageVariables.template}\"\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","contentHandling":"CONVERT_TO_TEXT","type":"aws"}}},"/send-message":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"recaptcha_privKey\": \"${stageVariables.recaptcha_privKey}\",\n    \"contact_send_email\": \"${stageVariables.contact_send_email}\",\n\n    \"name\": $input.json(\"$.name\"),\n    \"email\": $input.json(\"$.email\"),\n    \"message\": $input.json(\"$.message\"),\n    \"captchaResponse\": $input.json(\"$.captcha\")\n}"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/set-settings":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"new_settings\": $input.json(\"$.new_settings\")\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/submit-post":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n\n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"post_id\": $input.json('$.post_id'),\n    \"post_status\": $input.json('$.post_status'),\n    \"title\": $input.json('$.title'),\n    \"categories\": $input.json('$.categories'),\n    \"date\": $input.json('$.date'),\n    \"html\": $input.json('$.html')\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/unpublish-post":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"posts_table\": \"${stageVariables.posts_table}\",\n \n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"post_id\": $input.json(\"$.post_id\"),\n    \"date\": $input.json(\"$.date\")\n}"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/upload-image":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"articles_table\": \"${stageVariables.articles_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \n    \"image_resize_max_height\": \"${stageVariables.image_resize_max_height}\",\n    \"image_resize_max_width\": \"${stageVariables.image_resize_max_width}\",\n    \n    \"cookie\": \"$input.params('Cookie')\",\n    \"image\": $input.json('$.image')\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}},"/upload-template-image":{"post":{"consumes":["application/json"],"produces":["application/json"],"responses":{"200":{"description":"200 response","schema":{"$ref":"#/definitions/Empty"}}},"x-amazon-apigateway-integration":{"responses":{"default":{"statusCode":"200"}},"requestTemplates":{"application/json":"{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"articles_table\": \"${stageVariables.articles_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \n    \"image_resize_max_height\": \"${stageVariables.image_resize_max_height}\",\n    \"image_resize_max_width\": \"${stageVariables.image_resize_max_width}\",\n    \n    \"cookie\": \"$input.params('Cookie')\",\n    \"image\": $input.json('$.image')\n}\n"},"uri":"","passthroughBehavior":"when_no_templates","httpMethod":"POST","type":"aws"}}}},"definitions":{"Empty":{"type":"object","title":"Empty Schema"}}}
+{
+ "swagger": "2.0",
+ "info": {},
+ "basePath": "/prod",
+ "schemes": [
+  "https"
+ ],
+ "paths": {
+  "/": {
+   "get": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      },
+      "headers": {
+       "Content-Type": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200",
+       "responseParameters": {
+        "method.response.header.Content-Type": "'text/html'"
+       },
+       "responseTemplates": {
+        "application/json": "$input.path('$')"
+       }
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n    \n    \"template\": \"${stageVariables.template}\"\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/about": {
+   "get": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      },
+      "headers": {
+       "Content-Type": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200",
+       "responseParameters": {
+        "method.response.header.Content-Type": "'text/html'"
+       },
+       "responseTemplates": {
+        "application/json": "$input.path('$')"
+       }
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"template\": \"${stageVariables.template}\"\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/add-category": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"categories_table\": \"${stageVariables.categories_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n \n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\",\n    \"category\": $input.json('$.category')\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/category/{category-id}": {
+   "get": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "parameters": [
+     {
+      "name": "category-id",
+      "in": "path",
+      "required": true,
+      "type": "string"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      },
+      "headers": {
+       "Content-Type": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200",
+       "responseParameters": {
+        "method.response.header.Content-Type": "'text/html'"
+       },
+       "responseTemplates": {
+        "application/json": "$input.path('$')"
+       }
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"template\": \"${stageVariables.template}\",\n\n  \"method\": \"$context.httpMethod\",\n  \"body\" : $input.json('$'),\n  \"headers\": {\n    #foreach($param in $input.params().header.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().header.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"queryParams\": {\n    #foreach($param in $input.params().querystring.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().querystring.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"pathParams\": {\n    #foreach($param in $input.params().path.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().path.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  }  \n}"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/category/{category-id}/page": {
+   "get": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "parameters": [
+     {
+      "name": "category-id",
+      "in": "path",
+      "required": true,
+      "type": "string"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      },
+      "headers": {
+       "Content-Type": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200",
+       "responseParameters": {
+        "method.response.header.Content-Type": "'text/html'"
+       },
+       "responseTemplates": {
+        "application/json": "$input.path(\"$\")"
+       }
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"template\": \"${stageVariables.template}\",\n\n  \"method\": \"$context.httpMethod\",\n  \"body\" : $input.json('$'),\n  \"headers\": {\n    #foreach($param in $input.params().header.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().header.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"queryParams\": {\n    #foreach($param in $input.params().querystring.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().querystring.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"pathParams\": {\n    #foreach($param in $input.params().path.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().path.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  }  \n}"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/category/{category-id}/page/{page}": {
+   "get": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "parameters": [
+     {
+      "name": "category-id",
+      "in": "path",
+      "required": true,
+      "type": "string"
+     },
+     {
+      "name": "page",
+      "in": "path",
+      "required": true,
+      "type": "string"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      },
+      "headers": {
+       "Content-Type": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200",
+       "responseParameters": {
+        "method.response.header.Content-Type": "'text/html'"
+       },
+       "responseTemplates": {
+        "application/json": "$input.path(\"$\")"
+       }
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"template\": \"${stageVariables.template}\",\n\n  \"method\": \"$context.httpMethod\",\n  \"body\" : $input.json('$'),\n  \"headers\": {\n    #foreach($param in $input.params().header.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().header.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"queryParams\": {\n    #foreach($param in $input.params().querystring.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().querystring.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"pathParams\": {\n    #foreach($param in $input.params().path.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().path.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  }  \n}"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/contact": {
+   "get": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      },
+      "headers": {
+       "Content-Type": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200",
+       "responseParameters": {
+        "method.response.header.Content-Type": "'text/html'"
+       },
+       "responseTemplates": {
+        "application/json": "$input.path('$')"
+       }
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"captcha_key\": \"${stageVariables.recaptcha_privKey}\",\n    \"template\": \"${stageVariables.template}\"\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/delete-post": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"posts_table\": \"${stageVariables.posts_table}\",\n\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n\n    \"post_id\": $input.json(\"$.post_id\")\n}"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/edit-category": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n\n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"category_id\": $input.json('$.category_id'),\n    \"category_name\": $input.json('$.category_name')\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/get-categories": {
+   "get": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"categories_table\": \"${stageVariables.categories_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\"\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/get-post-admin": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n\n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"post_id\": $input.json(\"$.post_id\")\n}"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/get-settings": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \n    \"cookie\": \"$input.params('Cookie')\"\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/get-templates": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\"\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/list": {
+   "get": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      },
+      "headers": {
+       "Content-Type": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200",
+       "responseParameters": {
+        "method.response.header.Content-Type": "'text/html'"
+       },
+       "responseTemplates": {
+        "application/json": "$input.path('$')"
+       }
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n    \n    \"template\": \"${stageVariables.template}\"\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/list-posts-admin": {
+   "get": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\"\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/login": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      },
+      "headers": {
+       "Set-Cookie": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200",
+       "responseParameters": {
+        "method.response.header.Set-Cookie": "integration.response.body.Cookie"
+       },
+       "responseTemplates": {
+        "application/json": "{\n \"success\": $input.json('$.success') \n}"
+       }
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"admin_pass\": \"${stageVariables.admin_pass}\",\n    \"user_pass\": $input.json('$.password'),\n    \"remember_me\": $input.json('$.remember_me')\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/move-category": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \n    \"category_id\": $input.json('$.category_id'),\n    \"direction\": $input.json('$.direction')\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/page": {
+   "get": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      },
+      "headers": {
+       "Content-Type": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200",
+       "responseParameters": {
+        "method.response.header.Content-Type": "'text/html'"
+       },
+       "responseTemplates": {
+        "application/json": "$input.path('$')"
+       }
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"template\": \"${stageVariables.template}\",\n\n  \"method\": \"$context.httpMethod\",\n  \"body\" : $input.json('$'),\n  \"headers\": {\n    #foreach($param in $input.params().header.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().header.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"queryParams\": {\n    #foreach($param in $input.params().querystring.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().querystring.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"pathParams\": {\n    #foreach($param in $input.params().path.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().path.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  }  \n}"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/page/{page}": {
+   "get": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "parameters": [
+     {
+      "name": "page",
+      "in": "path",
+      "required": true,
+      "type": "string"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      },
+      "headers": {
+       "Content-Type": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200",
+       "responseParameters": {
+        "method.response.header.Content-Type": "'text/html'"
+       },
+       "responseTemplates": {
+        "application/json": "$input.path('$')"
+       }
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"template\": \"${stageVariables.template}\",\n\n  \"method\": \"$context.httpMethod\",\n  \"body\" : $input.json('$'),\n  \"headers\": {\n    #foreach($param in $input.params().header.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().header.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"queryParams\": {\n    #foreach($param in $input.params().querystring.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().querystring.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  },\n  \"pathParams\": {\n    #foreach($param in $input.params().path.keySet())\n    \"$param\": \"$util.escapeJavaScript($input.params().path.get($param))\" #if($foreach.hasNext),#end\n\n    #end\n  }  \n}"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/post/{post-id}": {
+   "get": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "parameters": [
+     {
+      "name": "post-id",
+      "in": "path",
+      "required": true,
+      "type": "string"
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      },
+      "headers": {
+       "Content-Type": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200",
+       "responseParameters": {
+        "method.response.header.Content-Type": "'text/html'"
+       },
+       "responseTemplates": {
+        "application/json": "$input.path('$')"
+       }
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\r\n    \"site_base_url\": \"${stageVariables.site_base_url}\",\r\n\r\n    \"posts_table\": \"${stageVariables.posts_table}\",\r\n    \"objects_table\": \"${stageVariables.objects_table}\",\r\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\r\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\r\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\r\n    \"template\": \"${stageVariables.template}\",\r\n    \"disqus_subdomain\": \"${stageVariables.disqus_subdomain}\",\r\n\r\n  \"method\": \"$context.httpMethod\",\r\n  \"body\" : $input.json('$'),\r\n  \"headers\": {\r\n    #foreach($param in $input.params().header.keySet())\r\n    \"$param\": \"$util.escapeJavaScript($input.params().header.get($param))\" #if($foreach.hasNext),#end\r\n\r\n    #end\r\n  },\r\n  \"queryParams\": {\r\n    #foreach($param in $input.params().querystring.keySet())\r\n    \"$param\": \"$util.escapeJavaScript($input.params().querystring.get($param))\" #if($foreach.hasNext),#end\r\n\r\n    #end\r\n  },\r\n  \"pathParams\": {\r\n    #foreach($param in $input.params().path.keySet())\r\n    \"$param\": \"$util.escapeJavaScript($input.params().path.get($param))\" #if($foreach.hasNext),#end\r\n\r\n    #end\r\n  }  \r\n}"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/publish-post": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"posts_table\": \"${stageVariables.posts_table}\",\n \n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"post_id\": $input.json(\"$.post_id\"),\n    \"date\": $input.json(\"$.date\")\n}"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/remove-category": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"cookie\": \"$input.params('Cookie')\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \n    \"category_id\": $input.json(\"$.category_id\"),\n    \"precedence\": $input.json(\"$.precedence\")\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/rss": {
+   "get": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      },
+      "headers": {
+       "Content-Type": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200",
+       "responseParameters": {
+        "method.response.header.Content-Type": "'application/rss+xml'"
+       },
+       "responseTemplates": {
+        "application/json": "$input.path('$')"
+       }
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n    \n    \"template\": \"${stageVariables.template}\"\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "contentHandling": "CONVERT_TO_TEXT",
+     "type": "aws"
+    }
+   }
+  },
+  "/send-message": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"recaptcha_privKey\": \"${stageVariables.recaptcha_privKey}\",\n    \"contact_send_email\": \"${stageVariables.contact_send_email}\",\n\n    \"name\": $input.json(\"$.name\"),\n    \"email\": $input.json(\"$.email\"),\n    \"message\": $input.json(\"$.message\"),\n    \"captchaResponse\": $input.json(\"$.captcha\")\n}"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/set-settings": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"cookie\": \"$input.params('Cookie')\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \n    \"new_settings\": $input.json(\"$.new_settings\")\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/submit-post": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"categories_posts_table\": \"${stageVariables.categories_posts_table}\",\n    \n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n\n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"post_id\": $input.json('$.post_id'),\n    \"post_status\": $input.json('$.post_status'),\n    \"title\": $input.json('$.title'),\n    \"categories\": $input.json('$.categories'),\n    \"date\": $input.json('$.date'),\n    \"html\": $input.json('$.html')\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/unpublish-post": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"posts_table\": \"${stageVariables.posts_table}\",\n \n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"post_id\": $input.json(\"$.post_id\"),\n    \"date\": $input.json(\"$.date\")\n}"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/upload-image": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"articles_table\": \"${stageVariables.articles_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \n    \"image_resize_max_height\": \"${stageVariables.image_resize_max_height}\",\n    \"image_resize_max_width\": \"${stageVariables.image_resize_max_width}\",\n    \n    \"cookie\": \"$input.params('Cookie')\",\n    \"image\": $input.json('$.image')\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  },
+  "/upload-template-image": {
+   "post": {
+    "consumes": [
+     "application/json"
+    ],
+    "produces": [
+     "application/json"
+    ],
+    "responses": {
+     "200": {
+      "description": "200 response",
+      "schema": {
+       "$ref": "#/definitions/Empty"
+      }
+     }
+    },
+    "x-amazon-apigateway-integration": {
+     "responses": {
+      "default": {
+       "statusCode": "200"
+      }
+     },
+     "requestTemplates": {
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n    \"articles_table\": \"${stageVariables.articles_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n    \n    \"image_resize_max_height\": \"${stageVariables.image_resize_max_height}\",\n    \"image_resize_max_width\": \"${stageVariables.image_resize_max_width}\",\n    \n    \"cookie\": \"$input.params('Cookie')\",\n    \"image\": $input.json('$.image')\n}\n"
+     },
+     "uri": "",
+     "passthroughBehavior": "when_no_templates",
+     "httpMethod": "POST",
+     "type": "aws"
+    }
+   }
+  }
+ },
+ "definitions": {
+  "Empty": {
+   "type": "object",
+   "title": "Empty Schema"
+  }
+ }
+}
