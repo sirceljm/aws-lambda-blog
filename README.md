@@ -18,10 +18,38 @@ Therefore it is free of any inflexible hardware infrastructure and running expen
  * run ```npm install```
  
  * Have an AWS account
- * Create a new user in IAM 
+ * Create a new user in IAM (you will put this user name into install_config.js later)
   * [IAM -> Users -> Add User -> Access type -> check Programmatic access]
- * give the user IAMFullAccess permission 
-  * [IAM -> Users -> your_user -> Permissions -> Add permissions -> Attach existing policies directly -> Search for IAMFullAccess -> Next:Review -> Add Permissions] 
+ * add anew inline policy to the user 
+  * [IAM -> Users -> your_user -> Permissions -> Add inline policy -> Custom policy -> Select -> Copy JSON below and enter a policy name
+  
+   ```json
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Stmt1481118325000",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreatePolicy",
+                "iam:CreateRole",
+                "iam:GetPolicy",
+                "iam:GetRole",
+                "iam:AttachUserPolicy",
+                "iam:AttachRolePolicy",
+                "iam:PassRole"
+            ],
+            "Resource": [
+                "*"
+            ]
+        }
+    ]
+}
+```
+
+-> Attach policy]
+
   * (install script will add other permisions that are necessary for installation)
 
  * Copy account keys for the user and make a json file that looks like this: 
