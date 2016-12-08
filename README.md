@@ -20,6 +20,16 @@ Therefore it is free of any inflexible hardware infrastructure and running expen
  * Have an AWS account
  * Create a new user in IAM (you will put this user name into install_config.js later)
   * [IAM -> Users -> Add User -> Access type -> check Programmatic access]
+ * Copy account keys for the user and make a json file that looks like this: 
+ ![user_access_keys](https://s3-us-west-2.amazonaws.com/s-media.si/static/img/user_access_keys.png)
+
+ ```json
+ {
+    "accessKeyId": "AK************", 
+    "secretAccessKey": "BX**********************", 
+    "region": "eu-west-1"
+}
+```
  * add anew inline policy to the user 
   * [IAM -> Users -> your_user -> Permissions -> Add inline policy -> Custom policy -> Select -> Copy JSON below and enter a policy name
   
@@ -51,17 +61,6 @@ Therefore it is free of any inflexible hardware infrastructure and running expen
  -> Attach policy]
 
   * (install script will add other permisions that are necessary for installation)
-
- * Copy account keys for the user and make a json file that looks like this: 
- ![user_access_keys](https://s3-us-west-2.amazonaws.com/s-media.si/static/img/user_access_keys.png)
-
- ```json
- {
-    "accessKeyId": "AK************", 
-    "secretAccessKey": "BX**********************", 
-    "region": "eu-west-1"
-}
-```
 
  * Have a domain/subdomain set up in Route53 
  * Copy and save Hosted Zone ID for your domain
