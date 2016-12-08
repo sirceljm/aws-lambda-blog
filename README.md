@@ -48,7 +48,7 @@ Therefore it is free of any inflexible hardware infrastructure and running expen
 }
 ```
 
--> Attach policy]
+ -> Attach policy]
 
   * (install script will add other permisions that are necessary for installation)
 
