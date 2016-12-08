@@ -18,6 +18,8 @@ var config = require('./install_config.js');
 var lambda_api_mappings = require('./install_Lambda_API_Gateway_mappings.json');
 
 var api_gateway_definitions = require('./install_API_Gateway_definitions.json');
+var installation_policy = require('./install_IAM_UserPolicy.json');
+var role_policy = require('./install_IAM_RolePolicy.json');
 
 var AWS = require('aws-sdk');
 AWS.config.loadFromPath(config.credentials_path);
@@ -32,41 +34,102 @@ var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 var apigateway = new AWS.APIGateway({apiVersion: '2015-07-09'});
 var cloudfront = new AWS.CloudFront({apiVersion: '2016-09-07'});
 var route53 = new AWS.Route53({apiVersion: '2013-04-01'});
+var sts = new AWS.STS()
 
 co(function*(){
 	console.log();
 	console.log(chalk.bold.cyan("AWS Lambda Blog Platform install"));
 
 	console.log();
-	console.log(chalk.cyan("Attaching user policies"));
+	console.log(chalk.cyan("Getting user account ID"));
+	var account_id = yield new Promise(function(resolve, reject){	
+		sts.getCallerIdentity({}, function(err, data) {
+		   if (err){
+		  	console.log(chalk.red(err));
+		  	console.log(err.stack);
+		  	reject()
+		  }else{
+		  	resolve(data.Account)
+		  }
+	 	});
+	});
 
-	var user_policies = [
-		"arn:aws:iam::aws:policy/AmazonAPIGatewayAdministrator",
-		"arn:aws:iam::aws:policy/AWSLambdaFullAccess",
-		"arn:aws:iam::aws:policy/AmazonS3FullAccess",
-		"arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-		"arn:aws:iam::aws:policy/AmazonSESFullAccess",
-		"arn:aws:iam::aws:policy/CloudFrontFullAccess",
-		"arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
-	];
+	console.log();
+	console.log(chalk.cyan("Creating policies"));
 
-	for(var i = 0; i < user_policies.length; i++){
-		yield new Promise(function(resolve, reject){
-			iam.attachUserPolicy({
-			  PolicyArn: user_policies[i], /* required */
-			  UserName: config.user_name /* required */
+	var install_policy_arn = yield new Promise(function(resolve, reject){
+		iam.getPolicy({
+		  PolicyArn: "arn:aws:iam::"+account_id+":policy/"+config.install_policy_name
+		}, function(err, data) {
+		  if (err) {
+	  		iam.createPolicy({
+			  PolicyDocument: JSON.stringify(installation_policy), /* required */
+			  PolicyName: config.install_policy_name, /* required */
 			}, function(err, data) {
-			  if (err){
-			  	console.log(chalk.red(err));
-			  	console.log(err.stack);
-			  	reject()
+			  if (err) {
+			  		console.log(chalk.red(err));
+			  		console.log(err.stack);
+			  		reject();
 			  }else{
-			  	console.log("Policy: " + chalk.green(user_policies[i]) + " was attached to the user: "+ chalk.yellow(config.user_name)); 
-			  	resolve()
+			  	resolve(data.Policy.Arn);
 			  }
 			});
-		})
-	}
+		  }else{
+		  	resolve(data.Policy.Arn);
+		  }
+		});
+	});
+
+	var role_policy_arn = yield new Promise(function(resolve, reject){
+		iam.getPolicy({
+		  PolicyArn: "arn:aws:iam::"+account_id+":policy/"+config.role_policy_name
+		}, function(err, data) {
+		  if (err) {
+	  		iam.createPolicy({
+			  PolicyDocument: JSON.stringify(role_policy), /* required */
+			  PolicyName: config.role_policy_name, /* required */
+			}, function(err, data) {
+			  if (err) {
+			  		console.log(chalk.red(err));
+			  		console.log(err.stack);
+			  		reject();
+			  }else{
+			  	resolve(data.Policy.Arn);
+			  }
+			});
+		  }else{
+		  	resolve(data.Policy.Arn);
+		  }
+		});
+	});
+
+	console.log();
+	console.log(chalk.cyan("Waiting 5s for changes to propagate"));
+
+	yield new Promise(function (resolve, reject) { 
+        setTimeout(function () { 
+            resolve();
+        }, 5000);
+    });
+
+	console.log();
+	console.log(chalk.cyan("Attaching policy to the user"));
+
+	yield new Promise(function(resolve, reject){
+		iam.attachUserPolicy({
+		  PolicyArn: install_policy_arn,
+		  UserName: config.user_name
+		}, function(err, data) {
+		  if (err){
+		  	console.log(chalk.red(err));
+		  	console.log(err.stack);
+		  	reject()
+		  }else{
+		  	console.log("Policy: " + chalk.green(config.install_policy_name) + " was attached to the user: "+ chalk.yellow(config.user_name)); 
+		  	resolve()
+		  }
+		});
+	})
 
 	console.log();
 	console.log(chalk.cyan("creating IAM role"));
@@ -83,7 +146,7 @@ co(function*(){
 			      "Action": [ "sts:AssumeRole" ]
 			   } ]
 			}),
-		  RoleName: config.role_name, /* required */
+		  RoleName: config.role_name, 
 		}, function(err, data) {
 		  if (err){
 		  	if(err.code = "EntityAlreadyExists"){
@@ -112,32 +175,32 @@ co(function*(){
 
 	
 	console.log();
-	console.log(chalk.cyan("Attaching role policies"));
+	console.log(chalk.cyan("Attaching policy to the role"));
 
-	var role_policies = [
-		"arn:aws:iam::aws:policy/AWSLambdaFullAccess",
-		"arn:aws:iam::aws:policy/AmazonS3FullAccess",
-		"arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-		"arn:aws:iam::aws:policy/AmazonSESFullAccess"
-	];
-
-	for(var i = 0; i < role_policies.length; i++){
-		yield new Promise(function(resolve, reject){
-			iam.attachRolePolicy({
-			  PolicyArn: role_policies[i], /* required */
-			  RoleName: config.role_name /* required */
-			}, function(err, data) {
-			  if (err){
-			  	console.log(chalk.red(err));
-			  	console.log(err.stack);
-			  	reject();
-			  }else{
-			  	console.log("Policy: " + chalk.green(user_policies[i]) + " was attached to the role: "+ chalk.yellow(config.role_name)); 
-			  	resolve(); 
-			  }
-			});
+	yield new Promise(function(resolve, reject){
+		iam.attachRolePolicy({
+		  PolicyArn: role_policy_arn, 
+		  RoleName: config.role_name 
+		}, function(err, data) {
+		  if (err){
+		  	console.log(chalk.red(err));
+		  	console.log(err.stack);
+		  	reject();
+		  }else{
+		  	console.log("Policy: " + chalk.green(role_policy_arn) + " was attached to the role: "+ chalk.yellow(config.role_name)); 
+		  	resolve(); 
+		  }
 		});
-	}
+	});
+
+	console.log();
+	console.log(chalk.cyan("Waiting 10s for changes to propagate"));
+
+	yield new Promise(function (resolve, reject) { 
+        setTimeout(function () { 
+            resolve();
+        }, 10000);
+    });
 
 	console.log();
 	console.log(chalk.cyan("Creating S3 bucket"));
@@ -506,7 +569,7 @@ co(function*(){
 		});
 	});	
 
-
+	
 	console.log();
 	console.log(chalk.cyan("Uploading Lambda functions & creating API gateway endpoints"));
 
@@ -612,10 +675,10 @@ co(function*(){
 					  		console.log(err.stack);
 						  }else{
 						  	lambda.addPermission({
-							  Action: 'lambda:*', /* required */
-							  FunctionName: lambda_fn_name, /* required */
-							  Principal: 'apigateway.amazonaws.com', /* required */
-							  StatementId: uuid.v4(), /* required */
+							  Action: 'lambda:*', 
+							  FunctionName: lambda_fn_name, 
+							  Principal: 'apigateway.amazonaws.com', 
+							  StatementId: uuid.v4(),
 							}, function(err, data) {
 							  if (err) {
 							  	console.log(err, err.stack); // an error occurred
@@ -633,10 +696,10 @@ co(function*(){
 				  	}
 				  }else{
 					lambda.addPermission({
-					  Action: 'lambda:*', /* required */
-					  FunctionName: lambda_fn_name, /* required */
-					  Principal: 'apigateway.amazonaws.com', /* required */
-					  StatementId: uuid.v4(), /* required */
+					  Action: 'lambda:*', 
+					  FunctionName: lambda_fn_name, 
+					  Principal: 'apigateway.amazonaws.com',
+					  StatementId: uuid.v4(),
 					}, function(err, data) {
 					  if (err) {
 					  	console.log(err, err.stack); // an error occurred
@@ -726,8 +789,8 @@ co(function*(){
 
 	var deployment_id = yield new Promise(function(resolve, reject){
 		var params = {
-		  restApiId: api_id, /* required */
-		  stageName: 'prod', /* required */
+		  restApiId: api_id, 
+		  stageName: 'prod', 
 		  cacheClusterEnabled: false,
 		  variables: config.api_gateway_stage_variables
 		};

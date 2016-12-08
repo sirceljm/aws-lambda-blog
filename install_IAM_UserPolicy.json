@@ -1,0 +1,76 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "Stmt1481104310000",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:AddPermission",
+        "lambda:CreateFunction",
+        "lambda:GetFunction",
+        "lambda:UpdateFunctionCode"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },{
+      "Sid": "Stmt1481096156000",
+      "Effect": "Allow",
+      "Action": [
+        "dynamodb:CreateTable",
+        "dynamodb:PutItem",
+        "dynamodb:DescribeTable"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },{
+      "Sid": "Stmt1481096595000",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:ListBucket",
+        "s3:ListBucketMultipartUploads",
+        "s3:ListMultipartUploadParts",
+        "s3:PutObjectAcl",
+        "s3:CreateBucket",
+        "s3:PutBucketWebsite",
+        "s3:PutObject"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },{
+      "Sid": "Stmt1481099810000",
+      "Effect": "Allow",
+      "Action": [
+        "cloudfront:CreateDistribution",
+        "cloudfront:GetDistributionConfig",
+        "cloudfront:ListDistributions",
+        "cloudfront:UpdateDistribution"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },{
+      "Sid": "Stmt1481099880000",
+      "Effect": "Allow",
+      "Action": [
+        "route53:ChangeResourceRecordSets"
+      ],
+      "Resource": [
+        "*"
+      ]
+    },{
+      "Sid": "Stmt1481104506000",
+      "Effect": "Allow",
+      "Action": [
+        "apigateway:*"
+      ],
+      "Resource": [
+        "*"
+      ]
+    }
+  ]
+}
