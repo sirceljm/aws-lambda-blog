@@ -14,31 +14,63 @@ var uuid = require('uuid');
 
 var zip = require("node-zip");
 
-var config = require('./install_config.js');
+var Mocha = require('mocha');
+
 var lambda_api_mappings = require('./install_Lambda_API_Gateway_mappings.json');
 
 var api_gateway_definitions = require('./install_API_Gateway_definitions.json');
 var installation_policy = require('./install_IAM_UserPolicy.json');
 var role_policy = require('./install_IAM_RolePolicy.json');
 
-var AWS = require('aws-sdk');
-AWS.config.loadFromPath(config.credentials_path);
 
-var iam = new AWS.IAM({apiVersion: '2010-05-08'});
-var lambda = new AWS.Lambda({apiVersion: '2015-03-31'});
-var s3 = new AWS.S3({
-	signatureVersion: 'v4',
-	apiVersion: '2006-03-01'
-});
-var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
-var apigateway = new AWS.APIGateway({apiVersion: '2015-07-09'});
-var cloudfront = new AWS.CloudFront({apiVersion: '2016-09-07'});
-var route53 = new AWS.Route53({apiVersion: '2013-04-01'});
-var sts = new AWS.STS()
 
 co(function*(){
 	console.log();
 	console.log(chalk.bold.cyan("AWS Lambda Blog Platform install"));
+
+	if(!fs.existsSync("install_config.js")){
+		console.log();
+		console.log(chalk.cyan("Creating install_config.json from install_config_template.js"));
+
+		yield new Promise(function(resolve, reject){
+			var rd = fs.createReadStream("install_config_template.js");
+			rd.on("error", function(err){
+				console.log(err);
+				reject();
+			});
+
+			var wr = fs.createWriteStream("install_config.js");
+			wr.on("error", function(err){
+				console.log(err);
+				reject();
+			});
+			wr.on("close", function(ex) {
+				resolve();
+			});
+			rd.pipe(wr);
+		});
+	}else{
+		console.log();
+		console.log(chalk.cyan("Not creating install_config.js from install_config_template.js - File already exists"));
+	}
+
+	var config = require('./install_config.js');
+
+	var AWS = require('aws-sdk');
+	AWS.config.loadFromPath(config.credentials_path);
+
+	var iam = new AWS.IAM({apiVersion: '2010-05-08'});
+	var lambda = new AWS.Lambda({apiVersion: '2015-03-31'});
+	var s3 = new AWS.S3({
+		signatureVersion: 'v4',
+		apiVersion: '2006-03-01'
+	});
+	var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+	var apigateway = new AWS.APIGateway({apiVersion: '2015-07-09'});
+	var cloudfront = new AWS.CloudFront({apiVersion: '2016-09-07'});
+	var route53 = new AWS.Route53({apiVersion: '2013-04-01'});
+	var sts = new AWS.STS()
+
 
 	console.log();
 	console.log(chalk.cyan("Getting user account ID"));
@@ -63,8 +95,8 @@ co(function*(){
 		}, function(err, data) {
 		  if (err) {
 	  		iam.createPolicy({
-			  PolicyDocument: JSON.stringify(installation_policy), /* required */
-			  PolicyName: config.install_policy_name, /* required */
+			  PolicyDocument: JSON.stringify(installation_policy),
+			  PolicyName: config.install_policy_name
 			}, function(err, data) {
 			  if (err) {
 			  		console.log(chalk.red(err));
@@ -87,7 +119,7 @@ co(function*(){
 		  if (err) {
 	  		iam.createPolicy({
 			  PolicyDocument: JSON.stringify(role_policy), /* required */
-			  PolicyName: config.role_policy_name, /* required */
+			  PolicyName: config.role_policy_name
 			}, function(err, data) {
 			  if (err) {
 			  		console.log(chalk.red(err));
@@ -146,10 +178,10 @@ co(function*(){
 			      "Action": [ "sts:AssumeRole" ]
 			   } ]
 			}),
-		  RoleName: config.role_name, 
+		  RoleName: config.role_name
 		}, function(err, data) {
 		  if (err){
-		  	if(err.code = "EntityAlreadyExists"){
+		  	if(err.code === "EntityAlreadyExists"){
 		  		console.log(chalk.yellow(err));
 				iam.getRole({
 				  RoleName: config.role_name
@@ -206,10 +238,10 @@ co(function*(){
 	console.log(chalk.cyan("Creating S3 bucket"));
 	yield new Promise(function(resolve, reject){
 		s3.createBucket({
-		  Bucket: config.bucket_name, /* required */
+		  Bucket: config.bucket_name
 		}, function(err, data) {
 		  if (err){
-		  	if(err.code == "BucketAlreadyOwnedByYou"){
+		  	if(err.code === "BucketAlreadyOwnedByYou"){
 		  		console.log(chalk.yellow(err));
 		  		resolve();
 		  	}else{
@@ -261,8 +293,7 @@ co(function*(){
 		  s3RetryCount: 3,    // this is the default
 		  s3RetryDelay: 1000, // this is the default
 		  multipartUploadThreshold: 20971520, // this is the default (20 MB)
-		  multipartUploadSize: 15728640, // this is the default (15 MB)
-		  // more options available. See API docs below.
+		  multipartUploadSize: 15728640 // this is the default (15 MB)
 		});
 
 		var params = {
@@ -273,7 +304,7 @@ co(function*(){
 		    Bucket: config.bucket_name,
 		    Prefix: "",
 		    ACL: "public-read"
-		  },
+		  }
 		};
 		var uploader = client.uploadDir(params);
 		uploader.on('error', function(err) {
@@ -298,7 +329,7 @@ co(function*(){
 				process.stdout.cursorTo(0);
 				process.stdout.write("Uploaded: "+files_uploaded+"/"+files_to_upload);
 
-				if(files_uploaded == files_to_upload){
+				if(files_uploaded === files_to_upload){
 					resolve();
 				}
 			});
@@ -334,11 +365,11 @@ co(function*(){
 		    ReadCapacityUnits: 1, /* required */
 		    WriteCapacityUnits: 1 /* required */
 		  },
-		  TableName: config.table_prefix+"_objects", /* required */
+		  TableName: config.table_prefix+"_objects" /* required */
 		};
 		dynamodb.createTable(params, function(err, data) {
 		  if (err){
-		  	if(err.code == "ResourceInUseException"){
+		  	if(err.code === "ResourceInUseException"){
 		  		console.log(chalk.yellow(err));
 		  		resolve();
 		  	}else{
@@ -395,14 +426,14 @@ co(function*(){
 		        ReadCapacityUnits: 1, /* required */
 		        WriteCapacityUnits: 1 /* required */
 		      }
-		    },
+		    }
 		    /* more items */
 		  ],
 		  TableName: config.table_prefix+"_posts", /* required */
 		};
 		dynamodb.createTable(params, function(err, data) {
 		  if (err){
-		  	if(err.code == "ResourceInUseException"){
+		  	if(err.code === "ResourceInUseException"){
 		  		console.log(chalk.yellow(err));
 		  		resolve();
 		  	}else{
@@ -442,11 +473,11 @@ co(function*(){
 		    ReadCapacityUnits: 1, /* required */
 		    WriteCapacityUnits: 1 /* required */
 		  },
-		  TableName: config.table_prefix+"_categories_posts", /* required */
+		  TableName: config.table_prefix+"_categories_posts" /* required */
 		};
 		dynamodb.createTable(params, function(err, data) {
 		  if (err){
-		  	if(err.code == "ResourceInUseException"){
+		  	if(err.code === "ResourceInUseException"){
 		  		console.log(chalk.yellow(err));
 		  		resolve();
 		  	}else{
@@ -481,9 +512,9 @@ co(function*(){
 							var db_key_type = key.split(" ")[1].replace(/[()]/g, "");
 
 							db_item[db_key] = {};
-							if(db_key == "JSON"){
+							if(db_key === "JSON"){
 								db_item[db_key][db_key_type] = JSON.stringify(data[i][key]);
-							}else if(db_key_type == "N"){
+							}else if(db_key_type === "N"){
 								db_item[db_key][db_key_type] = data[i][key]+"";
 							}else{
 								db_item[db_key][db_key_type] = data[i][key];
@@ -810,7 +841,7 @@ co(function*(){
 	var cloudfront_domain = yield new Promise(function(resolve, reject){
 		var cloudfront_params = {
 		  DistributionConfig: { /* required */
-		    CallerReference: 'lbp_caller_reference', /* required */
+		    CallerReference: config.cloudfront_caller_reference, /* required */
 		    Comment: config.cloudfront_comment, /* required */
 		    DefaultCacheBehavior: { /* required */
 		      ForwardedValues: { /* required */
@@ -1191,8 +1222,15 @@ co(function*(){
 		};
 		route53.changeResourceRecordSets(params, function(err, data) {
 		  if (err){
-		  	console.log(chalk.red(err));
-		  	console.log(err.stack);
+		  	if(err.code === "InvalidChangeBatch"){
+		  		console.log(chalk.yellow("There is already an A record for "+config.domain_name+" in hosted zone in Route53"));
+		  		resolve();
+		  	}else{
+		  		console.log(chalk.red(err));
+		  		console.log(err.stack);
+		  		reject();
+		  	}
+		  	
 		  }else{
 		  	resolve(); 
 		  }
@@ -1204,8 +1242,45 @@ co(function*(){
 	console.log(chalk.yellow("Please wait around 15 minutes for changes to propagate."));
 	console.log("Your admin password is: "+chalk.red(config.api_gateway_stage_variables.admin_pass)+" you can change it in API Gateway -> your API -> stages -> prod -> Stage variables");
 
+	var install_config = {
+		api_gateway_url: "https://"+api_id+".execute-api."+AWS.config.region+".amazonaws.com/"+config.api_gateway_deployment_name,
+		admin_password: config.api_gateway_stage_variables.admin_pass
+	}
+
+	yield new Promise(function(resolve, reject){
+		fs.writeFile("./install_test.json", JSON.stringify(install_config, null, 1), function(err) {
+			if(err) {
+			    reject(err);
+			}else{
+				resolve();
+			}	
+		});
+	})
+	console.log();
+	console.log(chalk.cyan("install_test.json was saved"));
+
+	console.log();
+	console.log(chalk.cyan("In the meantime we will run some tests on API Gateway"));
+	console.log(chalk.cyan("Wainting 10s for changes to propagate"));
+	yield new Promise(function (resolve, reject) { 
+        setTimeout(function () { 
+            resolve();
+        }, 10000);
+    });
+
+
+	yield new Promise(function(resolve, reject){
+		var tests_task = require("./run_tests.js");
+		tests_task.run().then(function(){
+			resolve();
+		})
+	});
+	
+
+
 	process.exit();
 
 }).catch(function(err){
 	console.log(err);
+	process.exit();
 });

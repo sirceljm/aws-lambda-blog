@@ -18,6 +18,7 @@ module.exports = {
 
 	"cloudfront_comment": "AWS Lambda Blog Platform", /*required for locating already configured cloudfront distribution - do not change unless you want to make another blog*/
 	"cloudfront_certificate_arn": "arn:aws:acm:us-east-1:128137337832:certificate/b870ad53-dea5-4ceb-aabc-**********", /* copy your certificate ARN here - certificate needs to be created in us-east-1*/
+	"cloudfront_caller_reference": "lbp_cloudfront_caller_reference", /* change if you are using more than one LBPs */
 
 	"api_gateway_stage_variables" : { /* you can edit all of those options later in API Gateway -> stages */
 		"site_base_url": "https://lbp.example.com", /* full base path of your blog */
