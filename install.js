@@ -1276,6 +1276,7 @@ co(function*(){
 		})
 	});
 	
+	console.log(chalk.yellow("If some tests failed please try again running 'node run_tests.js' as it is possible that all the changes to AWS haven't yet propagated."));
 
 
 	process.exit();
