@@ -14,9 +14,9 @@ Therefore it is free of any inflexible hardware infrastructure and running expen
 
 ## Prerequisites
 * Have an AWS account
- * Create a new user in IAM (you will put this user name into install_config.js later)
-  * [IAM -> Users -> Add User -> Access type -> check Programmatic access]
- * Copy account keys for the user and make a json file that looks like this: 
+* Create a new user in IAM (you will put this user name into install_config.js later)
+ * [IAM -> Users -> Add User -> Access type -> check Programmatic access]
+* Copy account keys for the user and make a json file that looks like this: 
  ![user_access_keys](https://s3-us-west-2.amazonaws.com/s-media.si/static/img/user_access_keys.png)
 
  ```json
@@ -56,7 +56,7 @@ Therefore it is free of any inflexible hardware infrastructure and running expen
 
  -> Attach policy]
 
-  * (install script will add other permisions that are necessary for installation)
+ * (install script will add other permisions that are necessary for installation)
   
 ## Installation
 
@@ -69,7 +69,6 @@ Therefore it is free of any inflexible hardware infrastructure and running expen
  * request a new certificate in AWS ACM (https://console.aws.amazon.com/acm/home?region=us-east-1#/) for *.yourdomain.com (HAS TO BE ISSUED IN __us-east-1__ REGION!!!) - you will have to approve request by email
  * copy this certificate ARN - and paste it into install_config.js
  ![alt tag](https://s3-us-west-2.amazonaws.com/s-media.si/static/img/cert_arn.png)
- 
  * get your recaptcha key (you can edit this later in API Gateway)
  * change values in install_config.js 
  * run ```node install.js```
