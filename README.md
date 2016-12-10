@@ -12,12 +12,8 @@ AWS Lambda Blog Platform is a complete blogging solution that uses the following
  
 Therefore it is free of any inflexible hardware infrastructure and running expenses are without any overhead even at the smallest scale.
 
-## Installation
-
- * download this repo, unzip and cd to project folder
- * run ```npm install```
- 
- * Have an AWS account
+## Prerequisites
+* Have an AWS account
  * Create a new user in IAM (you will put this user name into install_config.js later)
   * [IAM -> Users -> Add User -> Access type -> check Programmatic access]
  * Copy account keys for the user and make a json file that looks like this: 
@@ -61,7 +57,11 @@ Therefore it is free of any inflexible hardware infrastructure and running expen
  -> Attach policy]
 
   * (install script will add other permisions that are necessary for installation)
+  
+## Installation
 
+ * download this repo, unzip and cd to project folder
+ * run ```npm install```
  * Have a domain/subdomain set up in Route53 
  * Copy and save Hosted Zone ID for your domain
  ![alt tag](https://s3-us-west-2.amazonaws.com/s-media.si/static/img/hosted_zone.png)
