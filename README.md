@@ -70,6 +70,7 @@ Therefore it is free of any inflexible hardware infrastructure and running expen
  * copy this certificate ARN - and paste it into install_config.js
  ![alt tag](https://s3-us-west-2.amazonaws.com/s-media.si/static/img/cert_arn.png)
  * get your recaptcha key (you can edit this later in API Gateway)
+ * copy install_config_template.js to install_config.js
  * change values in install_config.js 
  * run ```node install.js```
  * if everything went smooth you should see your page after CloudFront changes resolve (usually takes around 15 minutes)
