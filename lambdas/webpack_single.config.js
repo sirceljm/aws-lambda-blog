@@ -1,11 +1,13 @@
+var credentials_path = './../../../credentials.csv';
+var config_path = './../install/lambda_config.json';
+
 var path = require("path");
 var fs = require("fs");
-
 var webpack = require("webpack");
-
 var AWSUploadPlugin = require("webpack-aws-lambda-upload-plugin");
 
-var config = require('./../install_config.js');
+
+var config = require(config_path);
 
 var file_path = process.argv[5];
 
@@ -22,7 +24,15 @@ var lambda_fn_name = first_line.substring(3).trim();
 var AWS = require('aws-sdk');
 var iam = new AWS.IAM();
 
-AWS.config.loadFromPath(config.credentials_path);
+var data = fs.readFileSync(credentials_path, "utf8").toString().split(/\r?\n/);
+var values = data[1].split(',');
+
+var user_credentials = {
+  accessKeyId: values[2],
+  secretAccessKey: values[3],
+  region: config.region
+}
+AWS.config.update(user_credentials);
 
 
 
@@ -55,7 +65,7 @@ module.exports = new Promise(function(resolve, reject){
           
           plugins: [    
             new AWSUploadPlugin({
-              aws_config: require("F:/iam/lbp.json"),
+              aws_config: user_credentials,
               lambda_name: config.lambda_prefix+"_"+lambda_fn_name,
               lambda_handler: dirname+".handler",
               lambda_role: data.Role.Arn,

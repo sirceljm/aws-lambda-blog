@@ -147,6 +147,7 @@ exports.handler = (event, context, callback) => {
 
     function getBlogPostHtml(post_id){
         return new Promise(function(resolve, reject){
+            console.log(site_base_url+"/"+articles_bucket_path+"/"+post_id+"/index.html");
             https.get(site_base_url+"/"+articles_bucket_path+"/"+post_id+"/index.html", (response) => {
                 var body = [];
                 response.on('data', function(chunk) {

@@ -39,5 +39,7 @@ jspm_packages
 
 lambdas/bin
 update_swagger_json.js
-install_config.js
-install_test.json
+install/install_config.js
+install/install_test.json
+install/lambda_config.json
+credentials.csv
