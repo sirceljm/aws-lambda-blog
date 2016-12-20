@@ -40,7 +40,8 @@ It runs completely serverless - free of any inflexible hardware infrastructure. 
 * Add permissions to the user
  * [IAM -> Users -> your_user -> Permissions -> Add inline policy -> Custom policy]
  * Copy the following JSON and give your inline policy a name
-   ```json
+
+ ```json
 {
     "Version": "2012-10-17",
     "Statement": [
@@ -65,10 +66,10 @@ It runs completely serverless - free of any inflexible hardware infrastructure. 
     ]
 }
 ``` 
- * (install script will add other permisions that are necessary for installation)
- * run ```node install.js```
- * wizard will take you through the process of installation
- * if everything went smooth you should see your page after CloudFront changes resolve (usually takes around 15 minutes)
+* (install script will add other permisions that are necessary for installation)
+* run ```node install.js```
+* wizard will take you through the process of installation
+* if everything went smooth you should see your page after CloudFront changes resolve (usually takes around 15 minutes)
 
 ## <a name="installation_advanced"></a>Advanced installation
 * download this repo, unzip and cd to project folder
