@@ -21,7 +21,7 @@ It runs completely serverless - free of any inflexible hardware infrastructure. 
 ## <a name="prerequisites"></a>Installation prerequisites
 * Have an AWS account
 * Have your domain/subdomain set up in Route53 
-* make sure you can receive email on one of the following adressees for https certificate generation (if you dont have mail server setu up, you can use https://github.com/sirceljm/AWS-SES-simple-mail-forward to forward emails to your email address)
+* make sure you can receive email on one of the following adressees for https certificate generation (if you dont have mail server set up, you can use https://github.com/sirceljm/AWS-SES-simple-mail-forward to forward emails to your email address)
  * administrator@domain.com
  * hostmaster@domain.com
  * postmaster@domain.com
