@@ -23,7 +23,6 @@ exports.handler = (event, context, callback) => {
     var objects_table = event.objects_table;
     var site_base_url = event.site_base_url;
     var posts_table = event.posts_table;
-    var categories_posts_table = event.categories_posts_table;
     var captcha_sitekey = event.captcha_sitekey;
 
     var template = event.template;
@@ -36,16 +35,16 @@ exports.handler = (event, context, callback) => {
         var settings_object = yield dynamoObjects(objects_table, 'settings');
         var settings = settings_object.object;
 
-        var recent_posts = yield getBlogPostsFromDB(); 
-
-        var category_posts = yield getCategoriesForBlogPosts();
+        var posts = yield getBlogPostsFromDB();
+        var recent_posts = _.clone(posts);
 
         for(var i = 0; i < categories.length; i++){
-            if(!_.find(category_posts, {'category_id': categories[i].category_id})){
+            if(!_.find(posts, function(post){return _.includes(post.categories, categories[i].category_id)})){
                 categories.splice(i, 1);
                 i--;
             }
         }
+
 
         var html = doT.template(templates.main_template)({
             header: doT.template(templates.header)({
@@ -73,7 +72,7 @@ exports.handler = (event, context, callback) => {
         callback(null, html);
     }).catch(onerror);
 
-    function getBlogPostsFromDB(){
+       function getBlogPostsFromDB(){
         return new Promise(function(resolve, reject){
             var params = { 
                 TableName: posts_table,
@@ -86,36 +85,18 @@ exports.handler = (event, context, callback) => {
                     ":post_status": "published",
                     ":date": 0
                 },
-                ScanIndexForward: false,
-                Limit: 5
+                ScanIndexForward: false
             };
 
             docClient.query(params, function(err, data) {
                 if (err){
                     reject(err);
                 }else{
-                    console.log(data);
                     resolve(data.Items);
                 }
             });
         })
-    }
-
-    function getCategoriesForBlogPosts(){
-        return new Promise(function(resolve, reject){
-            var params = { 
-                TableName: categories_posts_table
-            };
-
-            docClient.scan(params, function(err, data) {
-                if (err){
-                    reject(err);
-                }else{
-                    resolve(data.Items);
-                }
-            });
-        })
-    }
+    }    
     
 
     function onerror(err) {

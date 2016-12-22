@@ -33,7 +33,6 @@ module.exports = {
 		
 		"articles_bucket_path": "static/articles",
 
-		"categories_posts_table": "",
 		"objects_table": "",
 		"posts_table": "",
 

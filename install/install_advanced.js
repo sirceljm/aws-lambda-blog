@@ -447,52 +447,7 @@ co(function*(){
 		  	resolve(); 
 		  }
 		});
-	})
-
-	yield new Promise(function(resolve, reject){
-		var params = {
-		  AttributeDefinitions: [ /* required */
-		    {
-		      AttributeName: 'post_id', /* required */
-		      AttributeType: 'S' /* required */
-		    },
-		    {
-		      AttributeName: 'category_id', /* required */
-		      AttributeType: 'S' /* required */
-		    }
-		    /* more items */
-		  ],
-		  KeySchema: [{
-		      AttributeName: 'category_id', /* required */
-		      KeyType: 'HASH' /* required */
-		  },{
-		      AttributeName: 'post_id', /* required */
-		      KeyType: 'RANGE' /* required */
-		  }],
-		  ProvisionedThroughput: { /* required */
-		    ReadCapacityUnits: 1, /* required */
-		    WriteCapacityUnits: 1 /* required */
-		  },
-		  TableName: config.table_prefix+"_categories_posts" /* required */
-		};
-		dynamodb.createTable(params, function(err, data) {
-		  if (err){
-		  	if(err.code === "ResourceInUseException"){
-		  		console.log(chalk.yellow(err));
-		  		resolve();
-		  	}else{
-		  		console.log(chalk.red(err));
-		  		console.log(err.stack);
-		  		reject();
-		  	}
-		  	reject();
-		  }else{
-		  	console.log("Table: " + chalk.green(config.table_prefix+"_categories_posts") + " was created");
-		  	resolve(); 
-		  }
-		});
 	});
-
 
 	console.log();
 	console.log(chalk.cyan("Populating DynamoDB tables with data"));
@@ -581,25 +536,6 @@ co(function*(){
 			});
 		});
 	});
-
-	yield new Promise(function(resolve, reject){
-		var converter = new Converter({});
-		converter.fromFile("./install_categories_posts.csv",function(err,result){
-			var params = {
-			  TableName: config.table_prefix+"_objects"
-			};
-			dynamodb.waitFor('tableExists', params, function(err, data) {
-			  if (err){
-			  	console.log(err, err.stack);
-			  }else{
-				putToDB(config.table_prefix+"_categories_posts", result, err)().then(function(){
-					resolve();
-				}); 
-			  }	
-			});
-		});
-	});	
-
 	
 	console.log();
 	console.log(chalk.cyan("Uploading Lambda functions & creating API gateway endpoints"));
@@ -798,7 +734,6 @@ co(function*(){
 		});
 	});
 
-	config.api_gateway_stage_variables.categories_posts_table = config.table_prefix+"_categories_posts";
 	config.api_gateway_stage_variables.objects_table = config.table_prefix+"_objects";
 	config.api_gateway_stage_variables.posts_table = config.table_prefix+"_posts";
 

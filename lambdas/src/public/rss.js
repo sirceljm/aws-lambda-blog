@@ -25,7 +25,6 @@ exports.handler = (event, context, callback) => {
     var articles_bucket_path = event.articles_bucket_path;
     var posts_table = event.posts_table;
     var objects_table = event.objects_table;
-    var categories_posts_table = event.categories_posts_table;
 
     var template = event.template;
 
@@ -68,22 +67,6 @@ exports.handler = (event, context, callback) => {
             };
 
             docClient.query(params, function(err, data) {
-                if (err){
-                    reject(err);
-                }else{
-                    resolve(data.Items);
-                }
-            });
-        })
-    }
-
-    function getCategoriesForBlogPosts(){
-        return new Promise(function(resolve, reject){
-            var params = { 
-                TableName: categories_posts_table
-            };
-
-            docClient.scan(params, function(err, data) {
                 if (err){
                     reject(err);
                 }else{

@@ -28,7 +28,6 @@ exports.handler = (event, context, callback) => {
     var stage_articles_bucket_path = event.articles_bucket_path;
     var posts_table = event.posts_table;
     var objects_table = event.objects_table;
-    var categories_posts_table = event.categories_posts_table;
 
     var template = event.template;
     var disqus_subdomain = event.disqus_subdomain;
@@ -46,12 +45,10 @@ exports.handler = (event, context, callback) => {
         var settings = settings_object.object;
 
         var post = yield getBlogPostFromDB(post_id);
-        var recent_posts = yield getBlogPostsFromDB(); 
-
-        var category_posts = yield getCategoriesForBlogPosts();
+        var posts = yield getBlogPostsFromDB(); 
 
         for(var i = 0; i < categories.length; i++){
-            if(!_.find(category_posts, {'category_id': categories[i].category_id})){
+            if(!_.find(posts, function(post){return _.includes(post.categories, categories[i].category_id)})){
                 categories.splice(i, 1);
                 i--;
             }
@@ -68,21 +65,21 @@ exports.handler = (event, context, callback) => {
                 site_base_url: site_base_url,
                 categories: categories,
                 template_settings: settings.template,
-                recent_posts: recent_posts
+                recent_posts: posts
             }),
             content: doT.template(templates.template)({
                 site_base_url: site_base_url,
                 moment: moment,
                 categories: categories,
                 post: post,
-                recent_posts: recent_posts,
+                recent_posts: posts,
                 post_html: post_html,
                 disqus_subdomain: disqus_subdomain
             }),
             footer: doT.template(templates.footer)({
                 site_base_url: site_base_url,
                 categories: categories,
-                recent_posts: recent_posts,
+                recent_posts: posts,
             }),
         });
 
@@ -156,22 +153,6 @@ exports.handler = (event, context, callback) => {
         })
     }
     
-    function getCategoriesForBlogPosts(){
-        return new Promise(function(resolve, reject){
-            var params = { 
-                TableName: categories_posts_table
-            };
-
-            docClient.scan(params, function(err, data) {
-                if (err){
-                    reject(err);
-                }else{
-                    resolve(data.Items);
-                }
-            });
-        })
-    }
-
     function onerror(err) {
         console.log("ERROR!");
         console.log(err);

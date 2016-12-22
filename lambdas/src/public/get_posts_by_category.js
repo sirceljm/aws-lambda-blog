@@ -26,8 +26,7 @@ exports.handler = (event, context, callback) => {
     var stage_articles_bucket = event.articles_bucket;
     var stage_articles_bucket_path = event.articles_bucket_path;
     var posts_table = event.posts_table;
-    var categories_posts_table = event.categories_posts_table;
-    
+
     var objects_table = event.objects_table;
 
     var template = event.template;
@@ -53,10 +52,8 @@ exports.handler = (event, context, callback) => {
         var posts = yield getBlogPostsFromDB();
         var recent_posts = _.clone(posts);
 
-        var category_posts = yield getCategoriesForBlogPosts(category_id);
-
         for(var i = 0; i < categories.length; i++){
-            if(!_.find(category_posts, {'category_id': categories[i].category_id})){
+            if(!_.find(posts, function(post){return _.includes(post.categories, categories[i].category_id)})){
                 categories.splice(i, 1);
                 i--;
             }
@@ -121,28 +118,6 @@ exports.handler = (event, context, callback) => {
     }).catch(onerror);
 
 
-    function getBlogPostsForCategory(category_id){
-        return new Promise(function(resolve, reject){
-            var params = { 
-                TableName: categories_posts_table,
-                KeyConditionExpression: "category_id = :category_id",
-
-                ExpressionAttributeValues: {
-                    ":category_id": category_id
-                },
-            };
-
-            docClient.query(params, function(err, data) {
-                if (err){
-                    reject(err);
-                }else{
-                    resolve(data.Items);
-                }
-            });
-        })
-    }
-
-
     function getBlogPostsFromDB(){
         return new Promise(function(resolve, reject){
             var params = { 
@@ -168,23 +143,6 @@ exports.handler = (event, context, callback) => {
             });
         })
     }
-
-    function getCategoriesForBlogPosts(){
-        return new Promise(function(resolve, reject){
-            var params = { 
-                TableName: categories_posts_table
-            };
-
-            docClient.scan(params, function(err, data) {
-                if (err){
-                    reject(err);
-                }else{
-                    resolve(data.Items);
-                }
-            });
-        })
-    }
-
 
     function getBlogPostHtml(post_id){
         return new Promise(function(resolve, reject){

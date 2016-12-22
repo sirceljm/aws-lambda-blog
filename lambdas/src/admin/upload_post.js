@@ -25,7 +25,6 @@ exports.handler = (event, context, callback) => {
     var stage_articles_bucket_path = event.articles_bucket_path;
 
     var stage_posts_table = event.posts_table;
-    var stage_categories_posts_table = event.categories_posts_table;
 
     var post_id = event.post_id;
     var post_status = event.post_status;
@@ -51,9 +50,6 @@ exports.handler = (event, context, callback) => {
       	var old_post = yield getBlogPostFromDB(post_id);
       	console.log(old_post);
         yield updateBlogPostInDB(old_post.post_id, old_post.date, title, date, categories, post_status);
-      }
-      for(var i = 0; i < categories.length; i++){
-        yield addBlogPostToCategories(categories[i], post_id, date);
       }
 
       yield addBlogPostToS3(post_id, html);
@@ -137,27 +133,6 @@ exports.handler = (event, context, callback) => {
               }
             });
         })
-    }
-
-    function addBlogPostToCategories(category_id, post_id, post_date){
-      return new Promise(function(resolve, reject){
-        var params = {
-          TableName : stage_categories_posts_table,
-          Item: {
-            category_id: category_id,
-             post_id: post_id,
-             post_date: post_date
-          }
-        };
-
-        docClient.put(params, function(err, data) {
-          if (err){
-            reject(err);
-          }else{
-            resolve();
-          }
-        });
-      })
     }
 
     function addBlogPostToS3(post_id, html){
