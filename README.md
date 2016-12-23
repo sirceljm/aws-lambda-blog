@@ -1,4 +1,7 @@
-# LambdaBlogPlatform - serverless blogging platform built with AWS
+<img src="http://awsmedia.s3.amazonaws.com/AWS_Logo_PoweredBy_127px.png" alt="Powered by Amazon Web Services" align="right">
+
+# LambdaBlogPlatform 
+## serverless blogging platform built with AWS
 
 ## Table of Contents
  * [About](#about)
