@@ -111,6 +111,11 @@ co(function *(){
     hostedZoneIsSetResolve = resolve;
   });
 
+  var domainIsSetResolve;
+  var domainIsSet = new Promise(function(resolve, reject){
+    domainIsSetResolve = resolve;
+  });
+
   var certificatesAvailablePromiseResolve;
   var certificatesAvailablePromise = new Promise(function(resolve, reject){
     certificatesAvailablePromiseResolve = resolve;
@@ -159,6 +164,7 @@ co(function *(){
         install_config.cloudfront_comment = ans.answer+" - Awly";
         install_config.cloudfront_caller_reference = "lbp_cloudfront_caller_reference_"+ans.answer.toLowerCase();
         install_config.api_gateway_stage_variables.site_base_url = "https://"+ans.answer
+        domainIsSetResolve();
       }
       if(ans.name === "cloudfront_certificate_arn"){
         install_config.cloudfront_certificate_arn = ans.answer;
@@ -422,11 +428,13 @@ co(function *(){
   });
 
   yield hostedZoneIsSet;
+  yield domainIsSet;
+
   certificates = yield certificatesPromise;
 
   var filterCertificates = function(certificates, domain){
   	var d = parse_domain(domain);
- 
+
     var filtered_certificates = [];
     var certs = certificates.CertificateSummaryList;
 
@@ -439,7 +447,7 @@ co(function *(){
 		        });
 		      }
     	}else{ // subdomain
-    		if(certs[i].DomainName === "*."+d.domainName || certs[i].DomainName === d.domain){
+    		if(certs[i].DomainName === "*."+d.domainName || certs[i].DomainName === domain){
 		        filtered_certificates.push({
 		          name: certs[i].DomainName + " - " + certs[i].CertificateArn,
 		          value: certs[i].CertificateArn
@@ -455,13 +463,20 @@ co(function *(){
     return filtered_certificates;
   }
 
-  var filtered_certificates = filterCertificates(certificates, install_config.main_domain);
+  var filtered_certificates = filterCertificates(certificates, install_config.domain_name);
 
   if(filtered_certificates.length === 0){
     prompts.onNext({
       type: 'input',
       name: 'certificates_wait',
-      message: "There are no validated *."+install_config.main_domain+" certificates available in US East (N. Virginia) - us-east-1 region. Press Enter to refresh.",
+      message: function(){
+        if(install_config.main_domain === install_config.domain_name){ // domain
+          return "There are no validated "+install_config.main_domain+" certificates available in US East (N. Virginia) - us-east-1 region. Press Enter to refresh.";
+        }else{ // subdomain
+          return "There are no validated *."+install_config.main_domain+" certificates available in US East (N. Virginia) - us-east-1 region. Press Enter to refresh.";
+        }
+        
+      },
       validate: function(){
         acm.listCertificates({
           CertificateStatuses: ["ISSUED"]
@@ -469,11 +484,13 @@ co(function *(){
           if (err) {
             console.log(err, err.stack);
           }else{
-            filtered_certificates = filterCertificates(data, install_config.main_domain);
+            filtered_certificates = filterCertificates(data, install_config.domain_name);
           }
         });
 
-        return (filtered_certificates.length > 0 ? true : "Still no certificates available - make sure that certificate name is *."+install_config.main_domain+", that it is issued in US East (N. Virginia) - us-east-1 region, and that it is verified");
+        return (filtered_certificates.length > 0 ? true : "Still no certificates available - make sure that certificate name is "+
+          (install_config.main_domain === install_config.domain_name ? install_config.main_domain : "*."+install_config.main_domain) +
+          ", that it is issued in US East (N. Virginia) - us-east-1 region, and that it is verified");
       },
       filter: function(){
         return "Certificates available"
