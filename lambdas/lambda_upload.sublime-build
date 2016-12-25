@@ -1,0 +1,7 @@
+{
+	"cmd": "webpack --config ../../webpack_single.config.js --file ${file}",
+    "working_dir": "${project_path}",
+    "windows" : {
+    	"shell": true
+	}
+}
