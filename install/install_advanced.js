@@ -74,7 +74,7 @@ co(function*(){
 
 	console.log();
 	console.log(chalk.cyan("Getting user account ID"));
-	var account_id = yield new Promise(function(resolve, reject){	
+	var account_id = yield new Promise(function(resolve, reject){
 		sts.getCallerIdentity({}, function(err, data) {
 		   if (err){
 		  	console.log(chalk.red(err));
@@ -138,8 +138,8 @@ co(function*(){
 	console.log();
 	console.log(chalk.cyan("Waiting 5s for changes to propagate"));
 
-	yield new Promise(function (resolve, reject) { 
-        setTimeout(function () { 
+	yield new Promise(function (resolve, reject) {
+        setTimeout(function () {
             resolve();
         }, 5000);
     });
@@ -157,7 +157,7 @@ co(function*(){
 		  	console.log(err.stack);
 		  	reject()
 		  }else{
-		  	console.log("Policy: " + chalk.green(config.install_policy_name) + " was attached to the user: "+ chalk.yellow(config.user_name)); 
+		  	console.log("Policy: " + chalk.green(config.install_policy_name) + " was attached to the user: "+ chalk.yellow(config.user_name));
 		  	resolve()
 		  }
 		});
@@ -166,7 +166,7 @@ co(function*(){
 	console.log();
 	console.log(chalk.cyan("creating IAM role"));
 
-	var role_arn = yield new Promise(function(resolve, reject){	
+	var role_arn = yield new Promise(function(resolve, reject){
 		iam.createRole({
 		  AssumeRolePolicyDocument: JSON.stringify({
 			   "Version" : "2012-10-17",
@@ -205,22 +205,22 @@ co(function*(){
 		});
 	});
 
-	
+
 	console.log();
 	console.log(chalk.cyan("Attaching policy to the role"));
 
 	yield new Promise(function(resolve, reject){
 		iam.attachRolePolicy({
-		  PolicyArn: role_policy_arn, 
-		  RoleName: config.role_name 
+		  PolicyArn: role_policy_arn,
+		  RoleName: config.role_name
 		}, function(err, data) {
 		  if (err){
 		  	console.log(chalk.red(err));
 		  	console.log(err.stack);
 		  	reject();
 		  }else{
-		  	console.log("Policy: " + chalk.green(role_policy_arn) + " was attached to the role: "+ chalk.yellow(config.role_name)); 
-		  	resolve(); 
+		  	console.log("Policy: " + chalk.green(role_policy_arn) + " was attached to the role: "+ chalk.yellow(config.role_name));
+		  	resolve();
 		  }
 		});
 	});
@@ -228,8 +228,8 @@ co(function*(){
 	console.log();
 	console.log(chalk.cyan("Waiting 10s for changes to propagate"));
 
-	yield new Promise(function (resolve, reject) { 
-        setTimeout(function () { 
+	yield new Promise(function (resolve, reject) {
+        setTimeout(function () {
             resolve();
         }, 10000);
     });
@@ -252,7 +252,7 @@ co(function*(){
 		  	reject();
 		  }else{
 		  	console.log("S3 bucket: " + chalk.green(config.bucket_name) + " was created");
-		  	resolve(); 
+		  	resolve();
 		  }
 		})
 	});
@@ -277,7 +277,7 @@ co(function*(){
 		  	reject();
 		  }else{
 		  	console.log("S3 bucket: " + chalk.green(config.bucket_name) + " was configured for website hosting");
-		  	resolve(); 
+		  	resolve();
 		  }
 		});
 	});
@@ -298,7 +298,7 @@ co(function*(){
 
 		var params = {
 		  localDir: path.join(__dirname, "./public"),
-		  deleteRemoved: false, 
+		  deleteRemoved: false,
 
 		  s3Params: {
 		    Bucket: config.bucket_name,
@@ -311,7 +311,7 @@ co(function*(){
 		  console.error("unable to sync:", err.stack);
 		  reject();
 		});
-		
+
 		if(!uploader.filesFound){
 			console.log("no new files found");
 			resolve();
@@ -324,7 +324,7 @@ co(function*(){
 
 			uploader.on('fileUploadEnd', function(localFilePath, s3Key) {
 				files_uploaded++;
-				
+
 				process.stdout.clearLine();
 				process.stdout.cursorTo(0);
 				process.stdout.write("Uploaded: "+files_uploaded+"/"+files_to_upload);
@@ -334,7 +334,7 @@ co(function*(){
 				}
 			});
 		}
-		
+
 	});
 
 
@@ -380,7 +380,7 @@ co(function*(){
 		  	reject();
 		  }else{
 		  	console.log("Table: " + chalk.green(config.table_prefix+"_objects") + " was created");
-		  	resolve(); 
+		  	resolve();
 		  }
 		});
 	})
@@ -444,7 +444,7 @@ co(function*(){
 		  	reject();
 		  }else{
 		  	console.log("Table: " + chalk.green(config.table_prefix+"_posts") + " was created");
-		  	resolve(); 
+		  	resolve();
 		  }
 		});
 	});
@@ -467,7 +467,7 @@ co(function*(){
 							var db_key_type = key.split(" ")[1].replace(/[()]/g, "");
 
 							db_item[db_key] = {};
-							if(db_key === "JSON"){
+							if(db_key === "JSON" || db_key === "categories"){
 								db_item[db_key][db_key_type] = JSON.stringify(data[i][key]);
 							}else if(db_key_type === "N"){
 								db_item[db_key][db_key_type] = data[i][key]+"";
@@ -512,10 +512,10 @@ co(function*(){
 			  }else{
 			  	putToDB(config.table_prefix+"_objects", result, err)().then(function(){
 					resolve();
-				});	 
+				});
 			  }
 			});
-				
+
 		});
 	});
 
@@ -523,7 +523,7 @@ co(function*(){
 		var converter = new Converter({});
 		converter.fromFile("./install_posts.csv",function(err,result){
 			var params = {
-			  TableName: config.table_prefix+"_objects"
+			  TableName: config.table_prefix+"_posts"
 			};
 			dynamodb.waitFor('tableExists', params, function(err, data) {
 			  if (err){
@@ -531,12 +531,12 @@ co(function*(){
 			  }else{
 				putToDB(config.table_prefix+"_posts", result, err)().then(function(){
 					resolve();
-				});	
+				});
 			  }
 			});
 		});
 	});
-	
+
 	console.log();
 	console.log(chalk.cyan("Uploading Lambda functions & creating API gateway endpoints"));
 
@@ -584,7 +584,7 @@ co(function*(){
 
 			var mfs = new MemoryFS();
 			var compiler = webpack({
-			      entry: entries[i].path, 
+			      entry: entries[i].path,
 				  output: {
 				    path: __dirname,
 				    libraryTarget: "commonjs2",
@@ -594,14 +594,14 @@ co(function*(){
 				    "aws-sdk": "aws-sdk"
 				  },
 				  target: "node",
-				  
+
 				  module: {
 				    loaders: [{
 				        test: /\.json$/,
 				        loader: 'json'
 				      }]
 				  },
-				  
+
 			}, function(err, stats) {
 			    if (err){
 				  	console.log(chalk.red(err));
@@ -610,7 +610,7 @@ co(function*(){
 			});
 			compiler.outputFileSystem = mfs;
 
-			compiler.run(function(err, stats) { 
+			compiler.run(function(err, stats) {
 				var zip = new JSZip();
 
 				zip.file(entries[i].name, mfs.readFileSync(__dirname+"/"+"compiled.js"));
@@ -642,15 +642,15 @@ co(function*(){
 					  		console.log(err.stack);
 						  }else{
 						  	lambda.addPermission({
-							  Action: 'lambda:*', 
-							  FunctionName: lambda_fn_name, 
-							  Principal: 'apigateway.amazonaws.com', 
+							  Action: 'lambda:*',
+							  FunctionName: lambda_fn_name,
+							  Principal: 'apigateway.amazonaws.com',
 							  StatementId: uuid.v4(),
 							}, function(err, data) {
 							  if (err) {
 							  	console.log(err, err.stack); // an error occurred
 							  }else{
-							  	//console.log(JSON.parse(data.Statement).Resource); 
+							  	//console.log(JSON.parse(data.Statement).Resource);
 							  	lambda_api_mappings[fn_name_without_prefix].lambda_arn = JSON.parse(data.Statement).Resource;
 						  		resolve();
 							  }
@@ -663,15 +663,15 @@ co(function*(){
 				  	}
 				  }else{
 					lambda.addPermission({
-					  Action: 'lambda:*', 
-					  FunctionName: lambda_fn_name, 
+					  Action: 'lambda:*',
+					  FunctionName: lambda_fn_name,
 					  Principal: 'apigateway.amazonaws.com',
 					  StatementId: uuid.v4(),
 					}, function(err, data) {
 					  if (err) {
 					  	console.log(err, err.stack); // an error occurred
 					  }else{
-					  	//console.log(data); 
+					  	//console.log(data);
 					  	lambda_api_mappings[fn_name_without_prefix].lambda_arn = JSON.parse(data.Statement).Resource;
 				  		resolve();
 					  }
@@ -682,7 +682,7 @@ co(function*(){
 			});
 		});
 	}
-	
+
 	api_gateway_definitions.info.title = config.api_gateway_name;
 
 	for(var key in lambda_api_mappings){
@@ -755,8 +755,8 @@ co(function*(){
 
 	var deployment_id = yield new Promise(function(resolve, reject){
 		var params = {
-		  restApiId: api_id, 
-		  stageName: 'prod', 
+		  restApiId: api_id,
+		  stageName: 'prod',
 		  cacheClusterEnabled: false,
 		  variables: config.api_gateway_stage_variables
 		};
@@ -764,7 +764,7 @@ co(function*(){
 		  if (err){
 		  	console.log(err, err.stack);
 		  }else{
-		  	console.log(data); 
+		  	console.log(data);
 		  	resolve(data.id);
 		  }
 
@@ -856,14 +856,14 @@ co(function*(){
 		            Items: []
 		          },
 		          CustomOriginConfig: {
-		            HTTPPort: 80, 
-		            HTTPSPort: 443, 
-		            OriginProtocolPolicy: 'http-only', 
+		            HTTPPort: 80,
+		            HTTPSPort: 443,
+		            OriginProtocolPolicy: 'http-only',
 		            OriginSslProtocols: {
-		              Items: [ 
+		              Items: [
 		                'TLSv1','TLSv1.1','TLSv1.2',
 		              ],
-		              Quantity: 3 
+		              Quantity: 3
 		            }
 		          },
 		          OriginPath: '',
@@ -1113,7 +1113,7 @@ co(function*(){
 					  	console.log(chalk.red(err));
 					  	console.log(err.stack);
 					  }else{
-					  	resolve(data.Distribution.DomainName); 
+					  	resolve(data.Distribution.DomainName);
 					  }
 					});
 				  }
@@ -1124,7 +1124,7 @@ co(function*(){
 				  	console.log(chalk.red(err));
 				  	console.log(err.stack);
 				  }else{
-				  	resolve(data.Distribution.DomainName); 
+				  	resolve(data.Distribution.DomainName);
 				  }
 				});
 		  	}
@@ -1165,9 +1165,9 @@ co(function*(){
 		  		console.log(err.stack);
 		  		reject();
 		  	}
-		  	
+
 		  }else{
-		  	resolve(); 
+		  	resolve();
 		  }
 		});
 	});
@@ -1188,7 +1188,7 @@ co(function*(){
 			    reject(err);
 			}else{
 				resolve();
-			}	
+			}
 		});
 	})
 	console.log();
@@ -1197,8 +1197,8 @@ co(function*(){
 	console.log();
 	console.log(chalk.cyan("In the meantime we will run some tests on API Gateway"));
 	console.log(chalk.cyan("Wainting 10s for changes to propagate"));
-	yield new Promise(function (resolve, reject) { 
-        setTimeout(function () { 
+	yield new Promise(function (resolve, reject) {
+        setTimeout(function () {
             resolve();
         }, 10000);
     });
@@ -1210,7 +1210,7 @@ co(function*(){
 			resolve();
 		})
 	});
-	
+
 	console.log(chalk.yellow("If some tests failed please try again running 'node run_tests.js' as it is possible that all the changes to AWS haven't yet propagated."));
 
 
