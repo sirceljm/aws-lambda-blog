@@ -1046,7 +1046,7 @@ co(function *(){
     var converter = new Converter({});
     converter.fromFile("./install/install_posts.csv",function(err,result){
       var params = {
-        TableName: config.table_prefix+"_objects"
+        TableName: config.table_prefix+"_posts"
       };
       dynamodb.waitFor('tableExists', params, function(err, data) {
         if (err){
