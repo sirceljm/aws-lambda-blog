@@ -16,11 +16,11 @@ var zip = require("node-zip");
 
 var Mocha = require('mocha');
 
-var lambda_api_mappings = require('./install_Lambda_API_Gateway_mappings.json');
+var lambda_api_mappings = require('./install/install_Lambda_API_Gateway_mappings.json');
 
-var api_gateway_definitions = require('./install_API_Gateway_definitions.json');
-var installation_policy = require('./install_IAM_UserPolicy.json');
-var role_policy = require('./install_IAM_RolePolicy.json');
+var api_gateway_definitions = require('./install/install_API_Gateway_definitions.json');
+var installation_policy = require('./install/install_IAM_UserPolicy.json');
+var role_policy = require('./install/install_IAM_RolePolicy.json');
 
 
 
@@ -33,7 +33,7 @@ co(function*(){
 		console.log(chalk.cyan("Creating install_config.json from install_config_template.js"));
 
 		yield new Promise(function(resolve, reject){
-			var rd = fs.createReadStream("install_config_template.js");
+			var rd = fs.createReadStream("install/install_config_template.js");
 			rd.on("error", function(err){
 				console.log(err);
 				reject();
@@ -503,7 +503,7 @@ co(function*(){
 	var converter = new Converter({});
 	yield new Promise(function(resolve, reject){
 		var converter = new Converter({});
-		converter.fromFile("./install_objects.csv",function(err,result){
+		converter.fromFile("./install/install_objects.csv",function(err,result){
 			var params = {
 			  TableName: config.table_prefix+"_objects"
 			};
@@ -522,7 +522,7 @@ co(function*(){
 
 	yield new Promise(function(resolve, reject){
 		var converter = new Converter({});
-		converter.fromFile("./install_posts.csv",function(err,result){
+		converter.fromFile("./install/install_posts.csv",function(err,result){
 			var params = {
 			  TableName: config.table_prefix+"_posts"
 			};
