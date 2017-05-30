@@ -1339,6 +1339,9 @@ co(function *(){
           },
           Compress: true,
           DefaultTTL: 0,
+					LambdaFunctionAssociations: {
+						Quantity: 0
+					},
           MaxTTL: 0,
           SmoothStreaming: false
         },
@@ -1438,6 +1441,9 @@ co(function *(){
               },
               Compress: true,
               DefaultTTL: 86400,
+							LambdaFunctionAssociations: {
+								Quantity: 0
+							},
               MaxTTL: 31536000,
               SmoothStreaming: false
             },{
@@ -1484,6 +1490,9 @@ co(function *(){
               },
               Compress: true,
               DefaultTTL: 86400,
+							LambdaFunctionAssociations: {
+								Quantity: 0
+							},
               MaxTTL: 31536000,
               SmoothStreaming: false
             },{
@@ -1530,6 +1539,9 @@ co(function *(){
               },
               Compress: true,
               DefaultTTL: 86400,
+							LambdaFunctionAssociations: {
+								Quantity: 0
+							},
               MaxTTL: 31536000,
               SmoothStreaming: false
             },{
@@ -1576,6 +1588,9 @@ co(function *(){
               },
               Compress: true,
               DefaultTTL: 86400,
+							LambdaFunctionAssociations: {
+								Quantity: 0
+							},
               MaxTTL: 31536000,
               SmoothStreaming: false
             }]
