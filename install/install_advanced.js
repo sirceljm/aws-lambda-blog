@@ -468,7 +468,8 @@ co(function*(){
 
 							db_item[db_key] = {};
 							if(db_key === "JSON" || db_key === "categories"){
-								db_item[db_key][db_key_type] = JSON.stringify(data[i][key]);
+								//db_item[db_key][db_key_type] = JSON.stringify(data[i][key]);
+								db_item[db_key][db_key_type] = data[i][key]+"";
 							}else if(db_key_type === "N"){
 								db_item[db_key][db_key_type] = data[i][key]+"";
 							}else{
