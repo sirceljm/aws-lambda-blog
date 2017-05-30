@@ -747,12 +747,12 @@ co(function*(){
 	    uppercase: true
 	});
 
-	config.api_gateway_stage_variables.admin_pass = pass_generator.generate({
+	/* config.api_gateway_stage_variables.admin_pass = pass_generator.generate({
 	    length: 5,
 	    numbers: true,
 	    symbols: false,
 	    uppercase: true
-	});
+	}); */
 
 	var deployment_id = yield new Promise(function(resolve, reject){
 		var params = {
