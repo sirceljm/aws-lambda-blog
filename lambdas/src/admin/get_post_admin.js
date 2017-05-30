@@ -13,6 +13,7 @@ var dynamoObjects = require('../../lib/dynamoObjects.js');
 
 exports.handler = (event, context, callback) => {
     // STAGE VARIABLES FROM API GATEWAY
+    var site_base_url = event.site_base_url;
     var stage = event.stage;
     var signing_key = event.signing_key;
     var cookie = event.cookie;
