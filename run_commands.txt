@@ -1,0 +1,4 @@
+sls dynamodb install
+sls dynamodb start --seed=domain
+
+sls webpack serve

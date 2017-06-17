@@ -1,0 +1,110 @@
+service: aws-lambda-blog
+
+plugins:
+  - serverless-webpack
+  - serverless-dynamodb-local
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  stage: ${opt:stage, self:custom.stageDefault}
+  credentials: ${self:custom.${self:provider.stage}.credentials}
+
+functions:
+  get:
+    handler: get.handler
+    events:
+      - http:
+          path: ''
+          method: GET
+          integration: lambda
+  about:
+    handler: about.handler
+    events:
+      - http:
+          path: about/
+          method: GET
+          integration: lambda
+  contact:
+      handler: contact.handler
+      events:
+        - http:
+            path: contact/
+            method: GET
+            integration: lambda
+
+custom:
+  static:
+    - public
+
+  stageDefault: local
+  webpackDefault: webpack.config.js
+  webpack: ${opt:config, self:custom.webpackDefault}
+  local: ${file(./serverless/local.yml)}
+  webpackIncludeModules: true # enable auto-packing of external modules
+
+  dynamodb:
+    start:
+      port: 8001
+      inMemory: true
+      migrate: true
+      seed: true
+    seed:
+      domain:
+        sources:
+          - table: LBP-local_objects
+            sources: [./install/install_objects.json]
+          - table: LBP-local_posts
+            sources: [./install/install_posts.json]
+
+resources:
+  Resources:
+    objectsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: LBP-local_objects
+        AttributeDefinitions:
+          - AttributeName: object_id
+            AttributeType: S
+          - AttributeName: part
+            AttributeType: N
+        KeySchema:
+          - AttributeName: object_id
+            KeyType: HASH
+          - AttributeName: part
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    postsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: LBP-local_posts
+        AttributeDefinitions:
+          - AttributeName: post_id
+            AttributeType: S
+          - AttributeName: date
+            AttributeType: N
+          - AttributeName: post_status
+            AttributeType: S
+        KeySchema:
+          - AttributeName: post_id
+            KeyType: HASH
+          - AttributeName: date
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+        GlobalSecondaryIndexes:
+        - IndexName: post_status-date-index
+          KeySchema:
+            - AttributeName: post_status
+              KeyType: HASH
+            - AttributeName: date
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1

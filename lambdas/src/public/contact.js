@@ -1,10 +1,16 @@
 // contact
+
+require('dotenv').config();
 var co = require('co');
 var doT = require('dot');
 var moment = require('moment');
 var _ = require('lodash');
 
 var AWS = require('aws-sdk');
+AWS.config.update({ accessKeyId: "myKeyId", secretAccessKey: "secretKey", region: "localhost" });
+var cfg = { "endpoint": new AWS.Endpoint("http://localhost:8001")};
+AWS.config.update(cfg);
+
 var docClient = new AWS.DynamoDB.DocumentClient();
 var s3 = new AWS.S3();
 
@@ -12,20 +18,20 @@ var dynamoObjects = require('../../lib/dynamoObjects.js');
 
 var get_templates = function(template){
     return {
-        main_template: require('html!../../templates/'+template+'/main.html'),
-        header: require('html!../../templates/'+template+'/header.html'),
-        footer: require('html!../../templates/'+template+'/footer.html'),
-        template: require('html!../../templates/'+template+'/contact.html')
+        main_template: require('raw!../../templates/'+template+'/main.html'),
+        header: require('raw!../../templates/'+template+'/header.html'),
+        footer: require('raw!../../templates/'+template+'/footer.html'),
+        template: require('raw!../../templates/'+template+'/contact.html')
     } 
 }
 
 exports.handler = (event, context, callback) => {
-    var objects_table = event.objects_table;
-    var site_base_url = event.site_base_url;
-    var posts_table = event.posts_table;
-    var captcha_sitekey = event.captcha_sitekey;
+    var objects_table = event.objects_table || process.env.objects_table;
+    var site_base_url = event.site_base_url || process.env.site_base_url;
+    var posts_table = event.posts_table || process.env.posts_table;
+    var captcha_sitekey = event.captcha_sitekey || process.env.captcha_sitekey;
 
-    var template = event.template;
+    var template = event.template || process.env.template;
 
     var templates = get_templates(template);
 

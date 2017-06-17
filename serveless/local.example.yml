@@ -1,0 +1,3 @@
+credentials:
+  accessKeyId: ${env:ACCESS_KEY_ID}
+  secretAccessKey: ${env:SECRET_ACCESS_KEY}

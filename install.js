@@ -148,8 +148,8 @@ co(function *(){
       }
       if(ans.name === "region"){
       	AWS.config.update({
-			region: ans.answer
-		});
+          region: ans.answer
+        });
         install_config.region = ans.answer;
       }
       if(ans.name === "hosted_zone"){

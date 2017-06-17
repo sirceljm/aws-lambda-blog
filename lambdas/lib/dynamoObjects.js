@@ -4,12 +4,16 @@ var jwt = require('jsonwebtoken');
 var cookieParser = require('cookie');
 
 var AWS = require('aws-sdk');
+var cfg = { "endpoint": new AWS.Endpoint("http://localhost:8001")};
+AWS.config.update(cfg);
 var docClient = new AWS.DynamoDB.DocumentClient();
 
 module.exports = function(table, object_id){
 	this.table = table;
 	this.object_id = object_id;
 	this.object = null;
+
+	console.log(this.table);
 
 	this.load = function(){
 		var me = this;
@@ -21,6 +25,8 @@ module.exports = function(table, object_id){
 			        ":object_id": me.object_id
 			    }
 	        };
+
+			console.log(params);
 
 	        docClient.query(params, function(err, data) {
 	            if (err){
