@@ -36,6 +36,7 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
+.idea
 
 lambdas/bin
 update_swagger_json.js
