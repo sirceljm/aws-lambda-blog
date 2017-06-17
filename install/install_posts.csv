@@ -1,2 +1,2 @@
-"post_id (S)","categories (L)","date (N)","post_status (S)","post_url (S)","title (S)"
-"B1qAwQagx","[  { ""S"" : ""S1a0ySyC"" }]","1478390400000","published","congratulations_B1qAwQagx","Congratulations!"
+"post_id (S)","categories (S)","date (N)","post_status (S)","post_url (S)","title (S)"
+"B1qAwQagx","[{""S"":""S1a0ySyC""}]","1478390400000","published","congratulations_B1qAwQagx","Congratulations!"

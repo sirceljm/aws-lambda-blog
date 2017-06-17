@@ -13,6 +13,7 @@ var dynamoObjects = require('../../lib/dynamoObjects.js');
 
 exports.handler = (event, context, callback) => {
     // STAGE VARIABLES FROM API GATEWAY
+    var site_base_url = event.site_base_url;
     var stage = event.stage;
     var signing_key = event.signing_key;
     var cookie = event.cookie;
@@ -52,7 +53,7 @@ exports.handler = (event, context, callback) => {
     function getBlogPostFromDB(post_id){
         console.log("getBlogPostFromDB");
         return new Promise(function(resolve, reject){
-            var params = { 
+            var params = {
                 TableName: stage_posts_table,
                 KeyConditionExpression: "post_id = :post_id",
                 ExpressionAttributeValues: {
@@ -74,7 +75,7 @@ exports.handler = (event, context, callback) => {
     function getBlogPostHtml(post_id){
         console.log("getBlogPostHtml");
         return new Promise(function(resolve, reject){
-            https.get("https://www.s-media.si/"+stage_articles_bucket_path+"/"+post_id+"/index.html", (response) => {
+            https.get(site_base_url+"/"+stage_articles_bucket_path+"/"+post_id+"/index.html", (response) => {
                 var body = [];
                 response.on('data', function(chunk) {
                   body.push(chunk);

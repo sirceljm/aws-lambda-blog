@@ -445,7 +445,7 @@
       }
      },
      "requestTemplates": {
-      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n\n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"post_id\": $input.json(\"$.post_id\")\n}"
+      "application/json": "{\n    \"site_base_url\": \"${stageVariables.site_base_url}\",\n   \"signing_key\": \"${stageVariables.signing_key}\",\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"token_name\": \"${stageVariables.token_name}\",\n\n    \"articles_bucket\": \"${stageVariables.articles_bucket}\",\n    \"articles_bucket_path\": \"${stageVariables.articles_bucket_path}\",\n\n    \"cookie\": \"$input.params('Cookie')\",\n    \n    \"post_id\": $input.json(\"$.post_id\")\n}"
      },
      "uri": "",
      "passthroughBehavior": "when_no_templates",

@@ -45,18 +45,14 @@
             ]
         },
         {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
+            "Sid": "Stmt1481101769000",
+            "Effect": "Allow",
+            "Action": [
                 "logs:CreateLogGroup",
                 "logs:CreateLogStream",
                 "logs:PutLogEvents"
-              ],
-              "Resource": "arn:aws:logs:*:*:*"
-            }
-          ]
+            ],
+            "Resource": "arn:aws:logs:*:*:*"
         }
     ]
 }

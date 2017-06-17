@@ -60,7 +60,7 @@ exports.handler = (event, context, callback) => {
 	function getBlogPostFromDB(post_id){
         console.log("getBlogPostFromDB");
         return new Promise(function(resolve, reject){
-            var params = { 
+            var params = {
                 TableName: stage_posts_table,
                 KeyConditionExpression: "post_id = :post_id",
                 ExpressionAttributeValues: {
@@ -82,7 +82,7 @@ exports.handler = (event, context, callback) => {
 
     function addBlogPostToDB(title, date, categories, post_status){
         var post_id = shortid.generate();
-        
+
         return new Promise(function(resolve, reject){
             var params = {
               TableName : stage_posts_table,
@@ -138,12 +138,13 @@ exports.handler = (event, context, callback) => {
     function addBlogPostToS3(post_id, html){
         console.log(post_id, html);
         return new Promise(function(resolve, reject){
-            s3.putObject({ 
-                Bucket: stage_articles_bucket, 
-                Key: stage_articles_bucket_path+"/"+post_id+"/index.html", 
+            s3.putObject({
+                Bucket: stage_articles_bucket,
+                Key: stage_articles_bucket_path+"/"+post_id+"/index.html",
                 Body: html,
                 ACL: 'public-read',
-                ContentType: 'text/html; charset=utf-8"'
+                ContentType: 'text/html; charset=utf-8"',
+                CacheControl: 'max-age=30'
             }, function(err, data) {
                 if(err){
                     reject(err);
@@ -153,7 +154,7 @@ exports.handler = (event, context, callback) => {
             })
         });
     }
-    
+
 
     function onerror(err) {
         console.log("ERROR!");
