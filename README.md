@@ -95,28 +95,30 @@ It runs completely serverless - free of any inflexible hardware infrastructure. 
    ```json
 
    {
-       "Version": "2012-10-17",
-       "Statement": [
-           {
-               "Sid": "Stmt1481118325000",
-               "Effect": "Allow",
-               "Action": [
-                   "iam:CreatePolicy",
-                   "iam:CreateRole",
-                   "iam:GetPolicy",
-                   "iam:GetRole",
-                   "iam:AttachUserPolicy",
-                   "iam:AttachRolePolicy",
-                   "iam:PassRole",
-                   "route53:ListHostedZones",
-                   "acm:ListCertificates"
-               ],
-               "Resource": [
-                   "*"
-               ]
-           }
-       ]
-   }
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "Stmt1481118325000",
+                "Effect": "Allow",
+                "Action": [
+                    "iam:CreatePolicy",
+                    "iam:CreateRole",
+                    "iam:GetPolicy",
+                    "iam:GetRole",
+                    "iam:AttachUserPolicy",
+                    "iam:AttachRolePolicy",
+                    "iam:PassRole",
+                    "route53:ListHostedZones",
+                    "acm:ListCertificates",
+                    "iam:ListUserPolicies",
+                    "iam:GetUserPolicy"
+                ],
+                "Resource": [
+                    "*"
+                ]
+            }
+        ]
+    }
 ```
 
  -> Attach policy]
