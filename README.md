@@ -133,5 +133,5 @@ It runs completely serverless - free of any inflexible hardware infrastructure. 
  * get your recaptcha key (you can edit this later in API Gateway)
  * copy install/install_config_template.js to install/install_config.js
  * change values in install/install_config.js
- * run ```node install.js```
+ * run ```node install_advanced.js```
  * if everything went smooth you should see your page after CloudFront changes resolve (usually takes around 15 minutes)
