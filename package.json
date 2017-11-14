@@ -40,6 +40,7 @@
     "should": "^11.1.1",
     "speakingurl": "^9.0.0",
     "supertest": "^2.0.1",
+    "unhandled-rejection": "^1.0.0",
     "uuid": "^2.0.3",
     "webpack": "~1.12.13",
     "webpack-aws-lambda-upload-plugin": "git+https://github.com/sirceljm/webpack-aws-lambda-upload-plugin.git",

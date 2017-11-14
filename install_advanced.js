@@ -649,7 +649,9 @@ co(function*(){
 							  StatementId: uuid.v4(),
 							}, function(err, data) {
 							  if (err) {
-							  	console.log(err, err.stack); // an error occurred
+								console.log(chalk.red(err));
+  								console.log(err, err.stack); // an error occurred
+  								reject();
 							  }else{
 							  	//console.log(JSON.parse(data.Statement).Resource);
 							  	lambda_api_mappings[fn_name_without_prefix].lambda_arn = JSON.parse(data.Statement).Resource;
@@ -670,7 +672,9 @@ co(function*(){
 					  StatementId: uuid.v4(),
 					}, function(err, data) {
 					  if (err) {
-					  	console.log(err, err.stack); // an error occurred
+						console.log(chalk.red(err));
+  						console.log(err, err.stack); // an error occurred
+  						reject();
 					  }else{
 					  	//console.log(data);
 					  	lambda_api_mappings[fn_name_without_prefix].lambda_arn = JSON.parse(data.Statement).Resource;
@@ -679,7 +683,6 @@ co(function*(){
 					});
 				  }
 				});
-
 			});
 		});
 	}
@@ -853,8 +856,8 @@ co(function*(){
 		          OriginPath: '/'+config.api_gateway_deployment_name,
 		        },
 		        {
-		          DomainName: config.bucket_name+".s3-website-"+AWS.config.region+".amazonaws.com",
-		          Id: "Custom-"+config.bucket_name+".s3-website-"+AWS.config.region+".amazonaws.com",
+		          DomainName: config.bucket_name+".s3-website."+AWS.config.region+".amazonaws.com",
+		          Id: "Custom-"+config.bucket_name+".s3-website."+AWS.config.region+".amazonaws.com",
 		          CustomHeaders: {
 		            Quantity: 0,
 		            Items: []
@@ -901,7 +904,7 @@ co(function*(){
 		          },
 		          MinTTL: 0, /* required */
 		          PathPattern: '/images*', /* required */
-		          TargetOriginId: "Custom-"+config.bucket_name+".s3-website-"+AWS.config.region+".amazonaws.com", /* required */
+		          TargetOriginId: "Custom-"+config.bucket_name+".s3-website."+AWS.config.region+".amazonaws.com", /* required */
 		          TrustedSigners: { /* required */
 		            Enabled: false, /* required */
 		            Quantity: 0, /* required */
@@ -950,7 +953,7 @@ co(function*(){
 		          },
 		          MinTTL: 0, /* required */
 		          PathPattern: '/static*', /* required */
-		          TargetOriginId: "Custom-"+config.bucket_name+".s3-website-"+AWS.config.region+".amazonaws.com", /* required */
+		          TargetOriginId: "Custom-"+config.bucket_name+".s3-website."+AWS.config.region+".amazonaws.com", /* required */
 		          TrustedSigners: { /* required */
 		            Enabled: false, /* required */
 		            Quantity: 0, /* required */
@@ -999,7 +1002,7 @@ co(function*(){
 		          },
 		          MinTTL: 0, /* required */
 		          PathPattern: '/admin*', /* required */
-		          TargetOriginId: "Custom-"+config.bucket_name+".s3-website-"+AWS.config.region+".amazonaws.com", /* required */
+		          TargetOriginId: "Custom-"+config.bucket_name+".s3-website."+AWS.config.region+".amazonaws.com", /* required */
 		          TrustedSigners: { /* required */
 		            Enabled: false, /* required */
 		            Quantity: 0, /* required */
@@ -1048,7 +1051,7 @@ co(function*(){
 		          },
 		          MinTTL: 0, /* required */
 		          PathPattern: '/favicon.ico', /* required */
-		          TargetOriginId: "Custom-"+config.bucket_name+".s3-website-"+AWS.config.region+".amazonaws.com", /* required */
+		          TargetOriginId: "Custom-"+config.bucket_name+".s3-website."+AWS.config.region+".amazonaws.com", /* required */
 		          TrustedSigners: { /* required */
 		            Enabled: false, /* required */
 		            Quantity: 0, /* required */

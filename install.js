@@ -79,7 +79,6 @@ co(function *() {
         return new Promise(function (resolve, reject) {
             route53.listHostedZones({}, function (err, data) {
                 if (err) {
-                    console.log("lllllllllllllllllllll");
                     reject(err, err.stack);
                 } else {
                     var hosted_zones_options = [];
@@ -1206,7 +1205,9 @@ co(function *() {
                                         StatementId: uuid.v4(),
                                     }, function (err, data) {
                                         if (err) {
+                                            console.log(chalk.red(err));
                                             console.log(err, err.stack); // an error occurred
+                                            reject();
                                         } else {
                                             //console.log(JSON.parse(data.Statement).Resource);
                                             lambda_api_mappings[fn_name_without_prefix].lambda_arn = JSON.parse(data.Statement).Resource;
@@ -1227,7 +1228,9 @@ co(function *() {
                             StatementId: uuid.v4(),
                         }, function (err, data) {
                             if (err) {
+                                console.log(chalk.red(err));
                                 console.log(err, err.stack); // an error occurred
+                                reject();
                             } else {
                                 //console.log(data);
                                 lambda_api_mappings[fn_name_without_prefix].lambda_arn = JSON.parse(data.Statement).Resource;
@@ -1410,8 +1413,8 @@ co(function *() {
                             OriginPath: '/' + config.api_gateway_deployment_name,
                         },
                         {
-                            DomainName: config.bucket_name + ".s3-website-" + config.region + ".amazonaws.com",
-                            Id: "Custom-" + config.bucket_name + ".s3-website-" + config.region + ".amazonaws.com",
+                            DomainName: config.bucket_name + ".s3-website." + config.region + ".amazonaws.com",
+                            Id: "Custom-" + config.bucket_name + ".s3-website." + config.region + ".amazonaws.com",
                             CustomHeaders: {
                                 Quantity: 0,
                                 Items: []
@@ -1460,7 +1463,7 @@ co(function *() {
                         },
                         MinTTL: 0, /* required */
                         PathPattern: '/images*', /* required */
-                        TargetOriginId: "Custom-" + config.bucket_name + ".s3-website-" + config.region + ".amazonaws.com", /* required */
+                        TargetOriginId: "Custom-" + config.bucket_name + ".s3-website." + config.region + ".amazonaws.com", /* required */
                         TrustedSigners: {
                             /* required */
                             Enabled: false, /* required */
@@ -1512,7 +1515,7 @@ co(function *() {
                         },
                         MinTTL: 0, /* required */
                         PathPattern: '/static*', /* required */
-                        TargetOriginId: "Custom-" + config.bucket_name + ".s3-website-" + config.region + ".amazonaws.com", /* required */
+                        TargetOriginId: "Custom-" + config.bucket_name + ".s3-website." + config.region + ".amazonaws.com", /* required */
                         TrustedSigners: {
                             /* required */
                             Enabled: false, /* required */
@@ -1564,7 +1567,7 @@ co(function *() {
                         },
                         MinTTL: 0, /* required */
                         PathPattern: '/admin*', /* required */
-                        TargetOriginId: "Custom-" + config.bucket_name + ".s3-website-" + config.region + ".amazonaws.com", /* required */
+                        TargetOriginId: "Custom-" + config.bucket_name + ".s3-website." + config.region + ".amazonaws.com", /* required */
                         TrustedSigners: {
                             /* required */
                             Enabled: false, /* required */
@@ -1616,7 +1619,7 @@ co(function *() {
                         },
                         MinTTL: 0, /* required */
                         PathPattern: '/favicon.ico', /* required */
-                        TargetOriginId: "Custom-" + config.bucket_name + ".s3-website-" + config.region + ".amazonaws.com", /* required */
+                        TargetOriginId: "Custom-" + config.bucket_name + ".s3-website." + config.region + ".amazonaws.com", /* required */
                         TrustedSigners: {
                             /* required */
                             Enabled: false, /* required */
