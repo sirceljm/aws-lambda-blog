@@ -19,7 +19,7 @@ AWS Lambda Blog Platform is a complete blogging solution that uses the following
  * Cloudfront
  * SES
 
-It runs completely serverless - free of any inflexible hardware infrastructure. The whole system running as a team of small misroservices means that the running expenses are without any overhead even at the smallest scale.
+It runs completely serverless - free of any inflexible hardware infrastructure. The whole system running as a team of small microservices means that the running expenses are without any overhead even at the smallest scale.
 
 ## <a name="prerequisites"></a>Installation prerequisites
 * Have an AWS account
@@ -32,7 +32,7 @@ It runs completely serverless - free of any inflexible hardware infrastructure. 
  * admin@domain.com
 * request a new certificate in AWS ACM (https://console.aws.amazon.com/acm/home?region=us-east-1#/) (HAS TO BE ISSUED IN __us-east-1__ REGION!!!)
  * if you are using just the domain - certificate name should be domain.com
- * if you are using subdomain - certificate name should be subdomain.domain.com or *.domain.com
+ * if you are using subdomain - certificate name should be subdomain.domain.com or \*.domain.com
 
 ## <a name="installation"></a>Installation
 * download this repo, unzip and cd to project folder
