@@ -83,7 +83,7 @@
       }
      },
      "requestTemplates": {
-      "application/json": "{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \"template\": \"${stageVariables.template}\"\n}\n"
+      "application/json": "{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n  \"site_base_url\": \"${stageVariables.site_base_url}\",\n  \"template\": \"${stageVariables.template}\"\n}\n"
      },
      "uri": "",
      "passthroughBehavior": "when_no_templates",
@@ -317,7 +317,7 @@
       }
      },
      "requestTemplates": {
-      "application/json": "{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \n    \"captcha_key\": \"${stageVariables.recaptcha_privKey}\",\n    \"template\": \"${stageVariables.template}\"\n}\n"
+      "application/json": "{\n    \"posts_table\": \"${stageVariables.posts_table}\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \n    \"captcha_key\": \"${stageVariables.recaptcha_siteKey}\",\n  \"site_base_url\": \"${stageVariables.site_base_url}\",\n  \"template\": \"${stageVariables.template}\"\n}\n"
      },
      "uri": "",
      "passthroughBehavior": "when_no_templates",
