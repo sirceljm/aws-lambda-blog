@@ -30,6 +30,7 @@ It runs completely serverless - free of any inflexible hardware infrastructure. 
  * postmaster@domain.com
  * webmaster@domain.com
  * admin@domain.com
+
 * Request a new certificate in AWS ACM (https://console.aws.amazon.com/acm/home?region=us-east-1#/) (THIS HAS TO BE ISSUED IN the __us-east-1__ REGION!!!)
  * If you are using just the domain - the certificate name should be _domain.com_
  * If you are using a subdomain - the certificate name should be _subdomain.domain.com_ or _*.domain.com_
