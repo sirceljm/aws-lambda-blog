@@ -868,7 +868,7 @@
       }
      },
      "requestTemplates": {
-      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"cookie\": \"$input.params('Cookie')\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n    \n    \"category_id\": $input.json(\"$.category_id\"),\n    \"precedence\": $input.json(\"$.precedence\")\n}\n"
+      "application/json": "{\n    \"signing_key\": \"${stageVariables.signing_key}\",\n    \"cookie\": \"$input.params('Cookie')\",\n    \"objects_table\": \"${stageVariables.objects_table}\",\n     \"token_name\": \"${stageVariables.token_name}\",\n   \n    \"category_id\": $input.json(\"$.category_id\"),\n    \"precedence\": $input.json(\"$.precedence\")\n}\n"
      },
      "uri": "",
      "passthroughBehavior": "when_no_templates",
