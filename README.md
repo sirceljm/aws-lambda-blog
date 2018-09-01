@@ -1,3 +1,7 @@
+> I no longer actively develop this project. It was made in a way that it is quite easy to install and run, but not that easy to modify the code and expand on it.
+
+> If you are looking for a more developer friendly framework to make serverless web pages on AWS, please look at my other project: https://awly.io
+
 <img src="http://awsmedia.s3.amazonaws.com/AWS_Logo_PoweredBy_127px.png" alt="Powered by Amazon Web Services" align="right">
 
 # LambdaBlogPlatform
