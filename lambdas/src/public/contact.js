@@ -23,7 +23,7 @@ exports.handler = (event, context, callback) => {
     var objects_table = event.objects_table;
     var site_base_url = event.site_base_url;
     var posts_table = event.posts_table;
-    var captcha_sitekey = event.captcha_sitekey;
+    var captcha_sitekey = event.captcha_key;
 
     var template = event.template;
 
